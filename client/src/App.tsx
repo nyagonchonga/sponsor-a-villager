@@ -9,6 +9,7 @@ import Landing from "@/pages/landing";
 import Home from "@/pages/home";
 import SponsorPortal from "@/pages/sponsor-portal";
 import VillagerPortal from "@/pages/villager-portal";
+import VillagerRegister from "@/pages/villager-register";
 import VillagerDetails from "@/pages/villager-details";
 import Checkout from "@/pages/checkout";
 
@@ -17,6 +18,9 @@ function Router() {
 
   return (
     <Switch>
+      {/* Always accessible routes */}
+      <Route path="/villager-register" component={VillagerRegister} />
+      
       {isLoading || !isAuthenticated ? (
         <Route path="/" component={Landing} />
       ) : (

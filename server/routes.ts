@@ -72,6 +72,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Get villager profile for authenticated villager (must come before :id route)
+  app.get('/api/villagers/profile', isAuthenticated, async (req, res) => {
+    try {
+      const userId = req.user?.claims.sub;
+      if (!userId) {
+        return res.status(401).json({ message: "Unauthorized" });
+      }
+
+      const villager = await storage.getVillagerByUserId(userId);
+      if (!villager) {
+        return res.status(404).json({ message: "No villager profile found" });
+      }
+      res.json(villager);
+    } catch (error) {
+      console.error("Error fetching villager profile:", error);
+      res.status(500).json({ message: "Failed to fetch villager profile" });
+    }
+  });
+
   app.get('/api/villagers/:id', async (req, res) => {
     try {
       const villager = await storage.getVillager(req.params.id);

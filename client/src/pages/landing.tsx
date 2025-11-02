@@ -8,9 +8,10 @@ import Navigation from "@/components/navigation";
 import VillagerCard from "@/components/villager-card";
 import SponsorshipOptions from "@/components/sponsorship-options";
 import { Heart, Play, GraduationCap, Home, Bike, ChartLine, Check, Quote, Download, Users } from "lucide-react";
+import type { Villager } from "@shared/schema";
 
 export default function Landing() {
-  const { data: villagers = [] } = useQuery({
+  const { data: villagers = [] } = useQuery<Villager[]>({
     queryKey: ["/api/villagers"],
   });
 
@@ -52,6 +53,16 @@ export default function Landing() {
               >
                 <Heart className="mr-2 h-5 w-5" />
                 Sponsor a Villager
+              </Button>
+              <Button 
+                size="lg" 
+                variant="outline" 
+                className="border-2 border-white text-white hover:bg-white hover:text-gray-900"
+                onClick={() => window.location.href = "/villager-register"}
+                data-testid="button-join-as-villager"
+              >
+                <Users className="mr-2 h-5 w-5" />
+                Join as Villager
               </Button>
               <Button 
                 size="lg" 

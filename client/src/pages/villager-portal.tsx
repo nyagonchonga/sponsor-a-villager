@@ -53,10 +53,23 @@ export default function VillagerPortal() {
     }
   }, [isAuthenticated, isLoading, toast]);
 
-  const { data: villagerProfile, isLoading: isLoadingProfile } = useQuery({
+  const { data: villagerProfile, isLoading: isLoadingProfile, error: profileError } = useQuery({
     queryKey: ["/api/villagers/profile"],
-    enabled: isAuthenticated && user?.role === "villager",
+    enabled: isAuthenticated,
+    retry: false,
   });
+
+  // Redirect to registration only if profile query returns 404 (no profile found)
+  useEffect(() => {
+    if (!isLoadingProfile && isAuthenticated && !villagerProfile && profileError) {
+      const errorResponse = profileError as any;
+      // Only redirect on 404, not on other errors
+      if (errorResponse?.message === "No villager profile found" || 
+          (errorResponse?.response?.status === 404)) {
+        window.location.href = "/villager-register";
+      }
+    }
+  }, [isLoadingProfile, isAuthenticated, villagerProfile, profileError]);
 
   const { data: sponsorships = [] } = useQuery({
     queryKey: ["/api/sponsorships", villagerProfile?.id],
