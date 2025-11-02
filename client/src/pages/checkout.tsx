@@ -13,18 +13,18 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import Navigation from "@/components/navigation";
 import { ArrowLeft, Heart, CreditCard, Check } from "lucide-react";
+import type { Villager } from "@shared/schema";
 
 // Make sure to call `loadStripe` outside of a component's render to avoid
 // recreating the `Stripe` object on every render.
-if (!import.meta.env.VITE_STRIPE_PUBLIC_KEY) {
-  throw new Error('Missing required Stripe key: VITE_STRIPE_PUBLIC_KEY');
-}
-const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
+const stripePromise = import.meta.env.VITE_STRIPE_PUBLIC_KEY 
+  ? loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY)
+  : null;
 
 const CheckoutForm = ({ villager, sponsorshipType, componentType, amount }: {
-  villager: any;
+  villager: Villager;
   sponsorshipType: string;
-  componentType?: string;
+  componentType?: string | null;
   amount: number;
 }) => {
   const stripe = useStripe();
@@ -105,7 +105,7 @@ export default function Checkout() {
   const componentType = urlParams.get('component');
   const customAmount = urlParams.get('amount');
 
-  const { data: villager, isLoading: villagerLoading } = useQuery({
+  const { data: villager, isLoading: villagerLoading } = useQuery<Villager>({
     queryKey: ["/api/villagers", villagerId],
     enabled: !!villagerId,
   });
@@ -395,20 +395,33 @@ export default function Checkout() {
                 <Separator className="mb-6" />
 
                 {/* Payment Form */}
-                <Elements stripe={stripePromise} options={{ clientSecret }}>
-                  <CheckoutForm 
-                    villager={villager} 
-                    sponsorshipType={sponsorshipType}
-                    componentType={componentType}
-                    amount={amount}
-                  />
-                </Elements>
+                {stripePromise ? (
+                  <>
+                    <Elements stripe={stripePromise} options={{ clientSecret }}>
+                      <CheckoutForm 
+                        villager={villager} 
+                        sponsorshipType={sponsorshipType}
+                        componentType={componentType}
+                        amount={amount}
+                      />
+                    </Elements>
 
-                <div className="mt-6 text-center">
-                  <p className="text-xs text-gray-500">
-                    Payments are processed securely by Stripe. You will receive updates on {villager.name}'s progress.
-                  </p>
-                </div>
+                    <div className="mt-6 text-center">
+                      <p className="text-xs text-gray-500">
+                        Payments are processed securely by Stripe. You will receive updates on {villager.name}'s progress.
+                      </p>
+                    </div>
+                  </>
+                ) : (
+                  <div className="text-center py-8" data-testid="stripe-not-configured">
+                    <p className="text-gray-600 mb-4">
+                      Payment processing is currently not configured.
+                    </p>
+                    <p className="text-sm text-gray-500">
+                      Please contact the administrator to set up Stripe payments.
+                    </p>
+                  </div>
+                )}
               </CardContent>
             </Card>
           </div>

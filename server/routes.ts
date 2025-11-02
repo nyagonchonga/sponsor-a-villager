@@ -12,24 +12,33 @@ import {
   insertProgressUpdateSchema 
 } from "@shared/schema";
 
-if (!process.env.STRIPE_SECRET_KEY) {
-  throw new Error('Missing required Stripe secret: STRIPE_SECRET_KEY');
+// Extend Express types for authenticated user
+declare global {
+  namespace Express {
+    interface User {
+      claims: {
+        sub: string;
+        email?: string;
+        first_name?: string;
+        last_name?: string;
+        profile_image_url?: string;
+      };
+      access_token?: string;
+      refresh_token?: string;
+      expires_at?: number;
+    }
+  }
 }
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-  apiVersion: "2024-06-20",
-});
-
-interface AuthenticatedRequest extends Request {
-  user?: {
-    claims: {
-      sub: string;
-      email?: string;
-      first_name?: string;
-      last_name?: string;
-      profile_image_url?: string;
-    };
-  };
+// Initialize Stripe only if credentials are available
+let stripe: Stripe | null = null;
+if (process.env.STRIPE_SECRET_KEY) {
+  stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+    apiVersion: "2025-07-30.basil",
+  });
+  console.log('Stripe initialized successfully');
+} else {
+  console.warn('WARNING: Stripe not configured. Payment features will be disabled.');
 }
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -37,7 +46,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   await setupAuth(app);
 
   // Auth routes
-  app.get('/api/auth/user', isAuthenticated, async (req: AuthenticatedRequest, res) => {
+  app.get('/api/auth/user', isAuthenticated, async (req, res) => {
     try {
       const userId = req.user?.claims.sub;
       if (!userId) {
@@ -76,7 +85,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post('/api/villagers', isAuthenticated, async (req: AuthenticatedRequest, res) => {
+  app.post('/api/villagers', isAuthenticated, async (req, res) => {
     try {
       const userId = req.user?.claims.sub;
       if (!userId) {
@@ -99,7 +108,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.put('/api/villagers/:id', isAuthenticated, async (req: AuthenticatedRequest, res) => {
+  app.put('/api/villagers/:id', isAuthenticated, async (req, res) => {
     try {
       const userId = req.user?.claims.sub;
       const villager = await storage.getVillager(req.params.id);
@@ -121,7 +130,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Sponsorship routes
-  app.post('/api/sponsorships', isAuthenticated, async (req: AuthenticatedRequest, res) => {
+  app.post('/api/sponsorships', isAuthenticated, async (req, res) => {
     try {
       const sponsorId = req.user?.claims.sub;
       if (!sponsorId) {
@@ -144,7 +153,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get('/api/my-sponsorships', isAuthenticated, async (req: AuthenticatedRequest, res) => {
+  app.get('/api/my-sponsorships', isAuthenticated, async (req, res) => {
     try {
       const sponsorId = req.user?.claims.sub;
       if (!sponsorId) {
@@ -160,8 +169,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Payment routes
-  app.post("/api/create-payment-intent", isAuthenticated, async (req: AuthenticatedRequest, res) => {
+  app.post("/api/create-payment-intent", isAuthenticated, async (req, res) => {
     try {
+      if (!stripe) {
+        return res.status(503).json({ 
+          message: "Payment processing is not configured. Please contact the administrator." 
+        });
+      }
+
       const { amount, villagerId, sponsorshipType, componentType } = req.body;
       const sponsorId = req.user?.claims.sub;
       
@@ -188,7 +203,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
         sponsorshipType,
         componentType: componentType || 'full',
         stripePaymentIntentId: paymentIntent.id,
-        paymentStatus: 'pending',
       });
 
       res.json({ clientSecret: paymentIntent.client_secret });
@@ -200,6 +214,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Webhook to handle payment confirmations
   app.post("/api/stripe-webhook", async (req, res) => {
+    if (!stripe) {
+      return res.status(503).json({ 
+        message: "Payment processing is not configured." 
+      });
+    }
+
     const sig = req.headers['stripe-signature'] as string;
     
     try {
@@ -235,7 +255,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Message routes
-  app.post('/api/messages', isAuthenticated, async (req: AuthenticatedRequest, res) => {
+  app.post('/api/messages', isAuthenticated, async (req, res) => {
     try {
       const senderId = req.user?.claims.sub;
       if (!senderId) {
@@ -269,7 +289,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Progress routes
-  app.post('/api/progress', isAuthenticated, async (req: AuthenticatedRequest, res) => {
+  app.post('/api/progress', isAuthenticated, async (req, res) => {
     try {
       const validatedData = insertProgressUpdateSchema.parse(req.body);
       const update = await storage.createProgressUpdate(validatedData);
