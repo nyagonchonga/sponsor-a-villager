@@ -15,7 +15,8 @@ import {
   type ProgressUpdate,
   type InsertProgressUpdate,
 } from "@shared/schema";
-import { db } from "./db";
+// Only import db when using DatabaseStorage
+// import { db } from "./db";
 import { eq, desc, and, or, sql } from "drizzle-orm";
 
 export interface IStorage {
