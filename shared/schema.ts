@@ -49,6 +49,7 @@ export const villagers = pgTable("villagers", {
   age: integer("age").notNull(),
   location: varchar("location").notNull(),
   story: text("story").notNull(),
+  dream: text("dream"),
   profileImageUrl: varchar("profile_image_url"),
   targetAmount: decimal("target_amount", { precision: 10, scale: 2 }).notNull().default("65000.00"),
   currentAmount: decimal("current_amount", { precision: 10, scale: 2 }).notNull().default("0.00"),

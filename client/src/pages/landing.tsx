@@ -4,11 +4,13 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import { motion } from "framer-motion";
 import Navigation from "@/components/navigation";
 import VillagerCard from "@/components/villager-card";
 import SponsorshipOptions from "@/components/sponsorship-options";
 import SponsorLeaderboard from "@/components/sponsor-leaderboard";
-import { Heart, Play, GraduationCap, Home, Bike, ChartLine, Check, Quote, Download, Users, Trophy } from "lucide-react";
+import ImpactBar from "@/components/impact-bar";
+import { Heart, Play, GraduationCap, Home, Bike, ChartLine, Check, Quote, Download, Users, Trophy, Star } from "lucide-react";
 import type { Villager } from "@shared/schema";
 
 export default function Landing() {
@@ -21,60 +23,130 @@ export default function Landing() {
   const emptySlots = Array(Math.max(0, totalSlots - villagers.length)).fill(null);
 
   return (
-    <div className="font-sans text-gray-900 bg-gray-50">
-      <Navigation />
+    <div className="font-sans text-gray-900 bg-gray-50 overflow-x-hidden">
+      <div className="sticky top-0 z-50">
+        <ImpactBar />
+        <Navigation />
+      </div>
 
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-r from-kenya-red to-red-700 text-white py-20">
-        <div className="absolute inset-0 bg-black bg-opacity-40"></div>
+      <section className="relative min-h-[90vh] flex items-center bg-gray-900 overflow-hidden">
+        {/* Animated Background Gradients */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <motion.div
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [0.3, 0.5, 0.3],
+              x: [0, 50, 0],
+              y: [0, -30, 0]
+            }}
+            transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute -top-[20%] -right-[10%] w-[60%] h-[60%] bg-kenya-red/30 rounded-full blur-[120px]"
+          />
+          <motion.div
+            animate={{
+              scale: [1, 1.3, 1],
+              opacity: [0.2, 0.4, 0.2],
+              x: [0, -40, 0],
+              y: [0, 40, 0]
+            }}
+            transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute -bottom-[20%] -left-[10%] w-[60%] h-[60%] bg-trust-blue/30 rounded-full blur-[120px]"
+          />
+        </div>
+
         <div
           style={{
             backgroundImage: "url('https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80')",
             backgroundSize: "cover",
             backgroundPosition: "center"
           }}
-          className="absolute inset-0 opacity-30"
+          className="absolute inset-0 opacity-20 mix-blend-overlay"
         ></div>
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center animate-fade-in">
-            <h1 className="text-5xl md:text-6xl font-bold font-serif mb-6">
-              Empowering Rural Youth
-            </h1>
-            <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto leading-relaxed">
-              Break the cycle of poverty through clean mobility and digital platforms.
-              Sponsor a villager's journey from rural Kenya to sustainable livelihood in Nairobi.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button
-                size="lg"
-                className="bg-kenya-gold text-gray-900 hover:bg-yellow-400 transform hover:scale-105 transition-all"
-                onClick={() => document.getElementById('villagers')?.scrollIntoView({ behavior: 'smooth' })}
-                data-testid="button-sponsor-villager"
-              >
-                <Heart className="mr-2 h-5 w-5" />
-                Sponsor a Villager
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="border-2 border-white text-white hover:bg-white hover:text-gray-900"
-                onClick={() => window.location.href = "/villager-register"}
-                data-testid="button-join-as-villager"
-              >
-                <Users className="mr-2 h-5 w-5" />
-                Join as Villager
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="border-2 border-white text-white hover:bg-white hover:text-gray-900"
-                data-testid="button-watch-story"
-              >
-                <Play className="mr-2 h-5 w-5" />
-                Watch Our Story
-              </Button>
-            </div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+            >
+              <Badge variant="outline" className="mb-4 border-kenya-gold/50 text-kenya-gold px-4 py-1.5 text-sm font-bold tracking-widest uppercase bg-kenya-gold/5">
+                <Star className="w-3 h-3 mr-2 fill-kenya-gold" />
+                Empowering Rural Kenya
+              </Badge>
+              <h1 className="text-5xl md:text-7xl font-bold font-serif mb-6 text-white leading-tight">
+                Empowering <br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-kenya-gold to-yellow-200">
+                  Rural Youth
+                </span>
+              </h1>
+              <p className="text-xl md:text-2xl mb-8 text-gray-300 leading-relaxed max-w-xl">
+                Break the cycle of poverty through clean mobility and digital platforms.
+                Sponsor a villager's journey to independence.
+              </p>
+              <div className="flex flex-wrap gap-4">
+                <Button
+                  size="lg"
+                  className="bg-kenya-red text-white hover:bg-red-700 px-8 h-14 text-lg font-bold shadow-[0_0_20px_rgba(206,17,38,0.3)]"
+                  onClick={() => document.getElementById('villagers')?.scrollIntoView({ behavior: 'smooth' })}
+                >
+                  <Heart className="mr-2 h-5 w-5" />
+                  Sponsor Now
+                </Button>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="border-white/20 text-white hover:bg-white/10 h-14 px-8 text-lg font-bold backdrop-blur-sm"
+                  onClick={() => window.location.href = "/villager-register"}
+                >
+                  Join as Villager
+                </Button>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1, delay: 0.2 }}
+              className="relative hidden lg:block"
+            >
+              {/* Glassmorphism Social Proof Card */}
+              <div className="absolute -top-6 -right-6 z-10 p-6 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 shadow-2xl animate-bounce-slow">
+                <div className="flex items-center gap-4">
+                  <div className="flex -space-x-3">
+                    {[1, 2, 3, 4].map((i) => (
+                      <div key={i} className="w-10 h-10 rounded-full border-2 border-slate-900 bg-slate-800" />
+                    ))}
+                  </div>
+                  <div className="text-white">
+                    <p className="text-sm font-bold">500+ Sponsors</p>
+                    <p className="text-xs text-slate-400">Join our community</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="aspect-square relative rounded-3xl overflow-hidden border border-white/10 shadow-2xl">
+                <img
+                  src="https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                  alt="Rural Empowerment"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent" />
+              </div>
+
+              <div className="absolute -bottom-6 -left-6 z-10 p-6 rounded-2xl bg-gradient-to-br from-trust-blue to-blue-700 text-white shadow-2xl">
+                <div className="flex items-center gap-3">
+                  <div className="bg-white/20 p-2 rounded-lg">
+                    <Trophy className="h-6 w-6 text-kenya-gold" />
+                  </div>
+                  <div>
+                    <p className="text-xl font-black">120</p>
+                    <p className="text-xs font-bold uppercase tracking-widest opacity-80">Villagers Active</p>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -464,6 +536,7 @@ export default function Landing() {
       </section>
 
       {/* Footer */}
+      <ImpactBar />
       <footer className="bg-gray-900 text-white py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-4 gap-8">
