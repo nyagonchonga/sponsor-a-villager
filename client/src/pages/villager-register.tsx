@@ -14,14 +14,16 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, FormDes
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import Navigation from "@/components/navigation";
-import { UserPlus, MapPin, Calendar, FileText } from "lucide-react";
+import { UserPlus, MapPin, Calendar, FileText, Camera, Loader2, CreditCard } from "lucide-react";
+import { useState } from "react";
 
 const villagerRegistrationSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters").max(100, "Name is too long"),
   age: z.coerce.number().min(18, "Must be at least 18 years old").max(35, "Must be under 35"),
   location: z.string().min(2, "Location is required").max(200, "Location is too long"),
   story: z.string().min(50, "Please share your story (at least 50 characters)").max(1000, "Story is too long"),
-  profileImageUrl: z.string().url("Must be a valid URL").optional().or(z.literal("")),
+  idNumber: z.string().min(5, "ID Number is required"),
+  profileImageUrl: z.string().optional().or(z.literal("")),
 });
 
 type VillagerRegistrationData = z.infer<typeof villagerRegistrationSchema>;
@@ -31,16 +33,54 @@ export default function VillagerRegister() {
   const { toast } = useToast();
   const [, navigate] = useLocation();
 
+  const [uploading, setUploading] = useState(false);
+
   const form = useForm<VillagerRegistrationData>({
     resolver: zodResolver(villagerRegistrationSchema),
     defaultValues: {
-      name: "",
+      name: user ? `${user.firstName} ${user.lastName}` : "",
       age: 18,
       location: "",
       story: "",
+      idNumber: user?.idNumber || "",
       profileImageUrl: "",
     },
   });
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    setUploading(true);
+    try {
+      const response = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error("Upload failed");
+      }
+
+      const { url } = await response.json();
+      form.setValue("profileImageUrl", url);
+      toast({
+        title: "Success",
+        description: "Profile photo uploaded successfully",
+      });
+    } catch (error: any) {
+      toast({
+        title: "Upload failed",
+        description: error.message,
+        variant: "destructive",
+      });
+    } finally {
+      setUploading(false);
+    }
+  };
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
@@ -50,10 +90,10 @@ export default function VillagerRegister() {
         variant: "destructive",
       });
       setTimeout(() => {
-        window.location.href = "/api/login";
+        navigate("/auth");
       }, 500);
     }
-  }, [isAuthenticated, isLoading, toast]);
+  }, [isAuthenticated, isLoading, toast, navigate]);
 
   const registerMutation = useMutation({
     mutationFn: async (data: VillagerRegistrationData) => {
@@ -79,7 +119,7 @@ export default function VillagerRegister() {
           variant: "destructive",
         });
         setTimeout(() => {
-          window.location.href = "/api/login";
+          navigate("/auth");
         }, 500);
         return;
       }
@@ -112,7 +152,7 @@ export default function VillagerRegister() {
   return (
     <div className="min-h-screen bg-gray-50">
       <Navigation />
-      
+
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Card>
           <CardHeader className="space-y-1">
@@ -224,20 +264,63 @@ export default function VillagerRegister() {
 
                 <FormField
                   control={form.control}
+                  name="idNumber"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="flex items-center gap-2">
+                        <CreditCard className="h-4 w-4" />
+                        ID Number
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="National ID Number"
+                          {...field}
+                          data-testid="input-id-number"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
                   name="profileImageUrl"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Profile Image URL (Optional)</FormLabel>
+                      <FormLabel className="flex items-center gap-2">
+                        <Camera className="h-4 w-4" />
+                        Profile Photo
+                      </FormLabel>
                       <FormControl>
-                        <Input
-                          type="url"
-                          placeholder="https://example.com/your-photo.jpg"
-                          {...field}
-                          data-testid="input-profile-image-url"
-                        />
+                        <div className="space-y-4">
+                          <div className="flex items-center gap-4">
+                            {field.value && (
+                              <img
+                                src={field.value}
+                                alt="Preview"
+                                className="w-20 h-20 rounded-full object-cover border-2 border-kenya-green"
+                              />
+                            )}
+                            <Input
+                              type="file"
+                              accept="image/*"
+                              onChange={handleFileChange}
+                              className="cursor-pointer"
+                              disabled={uploading}
+                            />
+                          </div>
+                          {uploading && (
+                            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                              <Loader2 className="h-4 w-4 animate-spin" />
+                              Uploading...
+                            </div>
+                          )}
+                          <Input type="hidden" {...field} />
+                        </div>
                       </FormControl>
                       <FormDescription>
-                        Provide a URL to your profile photo
+                        Upload a clear photo of yourself for your profile
                       </FormDescription>
                       <FormMessage />
                     </FormItem>

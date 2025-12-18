@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sponsor a Villager - Empowering Rural Youth Kenya</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                fontFamily: {
+                    'inter': ['Inter', 'sans-serif'],
+                },
+                colors: {
+                    'kenya-green': '#006A4E',
+                    'kenya-red': '#CE1126',
+                    'trust-blue': '#2563EB',
+                    'warm-orange': '#F59E0B',
+                }
+            }
+        }
+    };
+    </script>
+</head>
+<body class="font-inter bg-slate-50">
+
+    <!-- @COMPONENT: NavigationHeader [user authentication, portal switching] -->
+    <nav class="bg-white shadow-sm border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-4">
+                    <div class="flex-shrink-0">
+                        <h1 class="text-xl font-bold text-kenya-green">SponsorVillager</h1>
+                    </div>
+                    <div class="hidden md:block">
+                        <div class="ml-10 flex items-baseline space-x-4">
+                            <a href="#" class="text-slate-900 hover:text-kenya-green px-3 py-2 text-sm font-medium">Home</a>
+                            <a href="#packages" class="text-slate-600 hover:text-kenya-green px-3 py-2 text-sm font-medium">Packages</a>
+                            <a href="#impact" class="text-slate-600 hover:text-kenya-green px-3 py-2 text-sm font-medium">Impact</a>
+                            <a href="#stories" class="text-slate-600 hover:text-kenya-green px-3 py-2 text-sm font-medium">Stories</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <!-- @STATE: userType:string = 'guest' | 'sponsor' | 'villager' -->
+                    <div class="hidden md:flex items-center space-x-2 bg-slate-100 rounded-lg p-1" data-functionality="Portal Switcher">
+                        <button class="px-3 py-1 text-sm font-medium text-slate-600 rounded-md hover:bg-white hover:text-kenya-green transition-colors" data-event="click:switchToSponsorPortal">
+                            <i class="fas fa-heart mr-1"></i>Sponsor
+                        </button>
+                        <button class="px-3 py-1 text-sm font-medium text-slate-600 rounded-md hover:bg-white hover:text-kenya-green transition-colors" data-event="click:switchToVillagerPortal">
+                            <i class="fas fa-users mr-1"></i>Villager
+                        </button>
+                    </div>
+                    
+                    <div class="flex items-center space-x-3">
+                        <button class="text-slate-600 hover:text-kenya-green px-3 py-2 text-sm font-medium" data-event="click:showLogin">Login</button>
+                        <button class="bg-kenya-green text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-kenya-green/90 transition-colors" data-event="click:showSignup">
+                            Get Started
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- @END_COMPONENT: NavigationHeader -->
+
+    <!-- @COMPONENT: HeroSection [main value proposition, CTA] -->
+    <section class="relative bg-gradient-to-r from-kenya-green to-emerald-600 text-white">
+        <!-- A wide panoramic view of rural Kenyan landscape with traditional huts and people -->
+        <div class="absolute inset-0 bg-black/20"></div>
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h1 class="text-4xl lg:text-6xl font-bold leading-tight mb-6">
+                        Empower Rural Youth Through 
+                        <span class="text-warm-orange">Clean Mobility</span>
+                    </h1>
+                    <p class="text-xl text-slate-200 mb-8 leading-relaxed">
+                        Break the cycle of poverty and dependency by sponsoring villagers with electric bikes, 
+                        training, and digital platform access. Your contribution directly changes lives.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <button class="bg-warm-orange text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-warm-orange/90 transition-colors" data-event="click:scrollToPackages">
+                            <i class="fas fa-heart mr-2"></i>Sponsor Now
+                        </button>
+                        <button class="border-2 border-white text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-white hover:text-kenya-green transition-colors" data-event="click:watchVideo">
+                            <i class="fas fa-play mr-2"></i>Watch Stories
+                        </button>
+                    </div>
+                </div>
+                <div class="lg:block hidden">
+                    <!-- Young African people with electric motorcycles in rural setting -->
+                    <img src="https://images.unsplash.com/photo-1600298881974-6be191ceeda1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=600" 
+                         alt="Young people with electric bikes in rural Kenya" 
+                         class="rounded-2xl shadow-2xl w-full h-auto" />
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: HeroSection -->
+
+    <!-- @COMPONENT: ImpactStats [key metrics, social proof] -->
+    <section class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-kenya-green mb-2" data-bind="stats.villagersSponsored">248</div>
+                    <div class="text-slate-600 font-medium">Villagers Sponsored</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-kenya-green mb-2" data-bind="stats.bikesProvided">156</div>
+                    <div class="text-slate-600 font-medium">Electric Bikes Provided</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-kenya-green mb-2" data-bind="stats.monthlyIncome">₹15,000</div>
+                    <div class="text-slate-600 font-medium">Average Monthly Income</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-kenya-green mb-2" data-bind="stats.familiesImpacted">892</div>
+                    <div class="text-slate-600 font-medium">Families Impacted</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: ImpactStats -->
+
+    <!-- @COMPONENT: SponsorshipPackages [tier selection, pricing] -->
+    <section id="packages" class="py-20 bg-slate-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-slate-900 mb-4">Choose Your Impact Level</h2>
+                <p class="text-xl text-slate-600 max-w-3xl mx-auto">
+                    Select a sponsorship package that fits your budget and desired impact. Every contribution matters.
+                </p>
+            </div>
+            
+            <div class="grid lg:grid-cols-4 gap-6">
+                <!-- Basic Package -->
+                <div class="bg-white rounded-2xl shadow-lg p-8 border border-slate-200 hover:shadow-xl transition-shadow">
+                    <div class="text-center mb-6">
+                        <div class="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-graduation-cap text-2xl text-slate-600"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-slate-900 mb-2">Basic Package</h3>
+                        <div class="text-3xl font-bold text-kenya-green mb-1">KSh 8,000</div>
+                        <div class="text-slate-600">Training & Licensing</div>
+                    </div>
+                    
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-center text-slate-600">
+                            <i class="fas fa-check text-emerald-500 mr-3"></i>
+                            NTSA Training & Licensing
+                        </li>
+                        <li class="flex items-center text-slate-600">
+                            <i class="fas fa-check text-emerald-500 mr-3"></i>
+                            Safety Certification
+                        </li>
+                        <li class="flex items-center text-slate-600">
+                            <i class="fas fa-check text-emerald-500 mr-3"></i>
+                            Progress Updates
+                        </li>
+                    </ul>
+                    
+                    <button class="w-full bg-slate-600 text-white py-3 rounded-lg font-semibold hover:bg-slate-700 transition-colors" data-event="click:selectBasicPackage">
+                        Sponsor Training
+                    </button>
+                </div>
+
+                <!-- Standard Package -->
+                <div class="bg-white rounded-2xl shadow-lg p-8 border border-slate-200 hover:shadow-xl transition-shadow">
+                    <div class="text-center mb-6">
+                        <div class="w-16 h-16 bg-trust-blue/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-route text-2xl text-trust-blue"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-slate-900 mb-2">Standard Package</h3>
+                        <div class="text-3xl font-bold text-trust-blue mb-1">KSh 10,000</div>
+                        <div class="text-slate-600">Training + Transport</div>
+                    </div>
+                    
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-center text-slate-600">
+                            <i class="fas fa-check text-emerald-500 mr-3"></i>
+                            Everything in Basic
+                        </li>
+                        <li class="flex items-center text-slate-600">
+                            <i class="fas fa-check text-emerald-500 mr-3"></i>
+                            Transport to Nairobi
+                        </li>
+                        <li class="flex items-center text-slate-600">
+                            <i class="fas fa-check text-emerald-500 mr-3"></i>
+                            Direct Messaging
+                        </li>
+                    </ul>
+                    
+                    <button class="w-full bg-trust-blue text-white py-3 rounded-lg font-semibold hover:bg-trust-blue/90 transition-colors" data-event="click:selectStandardPackage">
+                        Sponsor Journey
+                    </button>
+                </div>
+
+                <!-- Premium Package -->
+                <div class="bg-white rounded-2xl shadow-lg p-8 border-2 border-warm-orange relative hover:shadow-xl transition-shadow">
+                    <div class="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                        <span class="bg-warm-orange text-white px-4 py-1 rounded-full text-sm font-semibold">Popular</span>
+                    </div>
+                    
+                    <div class="text-center mb-6">
+                        <div class="w-16 h-16 bg-warm-orange/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-home text-2xl text-warm-orange"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-slate-900 mb-2">Premium Package</h3>
+                        <div class="text-3xl font-bold text-warm-orange mb-1">KSh 18,000</div>
+                        <div class="text-slate-600">Training + Transport + Housing</div>
+                    </div>
+                    
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-center text-slate-600">
+                            <i class="fas fa-check text-emerald-500 mr-3"></i>
+                            Everything in Standard
+                        </li>
+                        <li class="flex items-center text-slate-600">
+                            <i class="fas fa-check text-emerald-500 mr-3"></i>
+                            2 Months Shared Housing
+                        </li>
+                        <li class="flex items-center text-slate-600">
+                            <i class="fas fa-check text-emerald-500 mr-3"></i>
+                            Photo Progress Updates
+                        </li>
+                    </ul>
+                    
+                    <button class="w-full bg-warm-orange text-white py-3 rounded-lg font-semibold hover:bg-warm-orange/90 transition-colors" data-event="click:selectPremiumPackage">
+                        Sponsor Housing
+                    </button>
+                </div>
+
+                <!-- Full Program Package -->
+                <div class="bg-gradient-to-b from-kenya-green to-emerald-600 rounded-2xl shadow-lg p-8 text-white relative hover:shadow-xl transition-shadow">
+                    <div class="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                        <span class="bg-kenya-red text-white px-4 py-1 rounded-full text-sm font-semibold">Full Impact</span>
+                    </div>
+                    
+                    <div class="text-center mb-6">
+                        <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-motorcycle text-2xl text-white"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-2">Full Program</h3>
+                        <div class="text-3xl font-bold mb-1">KSh 48,000</div>
+                        <div class="text-slate-200">Complete Transformation</div>
+                    </div>
+                    
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-center text-slate-200">
+                            <i class="fas fa-check text-white mr-3"></i>
+                            Everything in Premium
+                        </li>
+                        <li class="flex items-center text-slate-200">
+                            <i class="fas fa-check text-white mr-3"></i>
+                            Electric Bike Deposit
+                        </li>
+                        <li class="flex items-center text-slate-200">
+                            <i class="fas fa-check text-white mr-3"></i>
+                            Priority Support & Mentoring
+                        </li>
+                        <li class="flex items-center text-slate-200">
+                            <i class="fas fa-check text-white mr-3"></i>
+                            Direct Video Calls
+                        </li>
+                    </ul>
+                    
+                    <button class="w-full bg-white text-kenya-green py-3 rounded-lg font-semibold hover:bg-slate-100 transition-colors" data-event="click:selectFullPackage">
+                        Transform A Life
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Shared Sponsorship Option -->
+            <div class="mt-12 text-center">
+                <div class="bg-white rounded-xl shadow-lg p-8 max-w-2xl mx-auto border border-slate-200">
+                    <h3 class="text-2xl font-bold text-slate-900 mb-4">Can't sponsor fully? Share the impact!</h3>
+                    <p class="text-slate-600 mb-6">Join other sponsors to collectively fund packages. Every contribution counts.</p>
+                    <button class="bg-slate-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-slate-700 transition-colors" data-event="click:showSharedSponsorship">
+                        <i class="fas fa-users mr-2"></i>Join Shared Sponsorship
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: SponsorshipPackages -->
+
+    <!-- @COMPONENT: DualPortalPreview [sponsor vs villager dashboard previews] -->
+    <section class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-slate-900 mb-4">Two Portals, One Mission</h2>
+                <p class="text-xl text-slate-600 max-w-3xl mx-auto">
+                    Stay connected through dedicated portals designed for sponsors and villagers.
+                </p>
+            </div>
+            
+            <div class="grid lg:grid-cols-2 gap-12">
+                <!-- Sponsor Portal Preview -->
+                <div class="bg-gradient-to-br from-trust-blue to-blue-600 rounded-2xl p-8 text-white">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center mr-4">
+                            <i class="fas fa-heart text-2xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold">Sponsor Portal</h3>
+                    </div>
+                    
+                    <div class="space-y-4 mb-8">
+                        <div class="bg-white/10 rounded-lg p-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="font-medium">John Kamau</span>
+                                <span class="text-sm bg-emerald-500 px-2 py-1 rounded-full">Active</span>
+                            </div>
+                            <div class="text-sm text-blue-100">Training completed • Week 3</div>
+                        </div>
+                        
+                        <div class="bg-white/10 rounded-lg p-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="font-medium">Progress Tracking</span>
+                                <span class="text-sm">75%</span>
+                            </div>
+                            <div class="w-full bg-white/20 rounded-full h-2">
+                                <div class="bg-warm-orange h-2 rounded-full" style="width: 75%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <ul class="space-y-3 text-sm text-blue-100">
+                        <li class="flex items-center"><i class="fas fa-check mr-2"></i>Track villager progress</li>
+                        <li class="flex items-center"><i class="fas fa-check mr-2"></i>Direct messaging</li>
+                        <li class="flex items-center"><i class="fas fa-check mr-2"></i>Impact reporting</li>
+                        <li class="flex items-center"><i class="fas fa-check mr-2"></i>Payment management</li>
+                    </ul>
+                </div>
+
+                <!-- Villager Portal Preview -->
+                <div class="bg-gradient-to-br from-kenya-green to-emerald-600 rounded-2xl p-8 text-white">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center mr-4">
+                            <i class="fas fa-user text-2xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold">Villager Portal</h3>
+                    </div>
+                    
+                    <div class="space-y-4 mb-8">
+                        <div class="bg-white/10 rounded-lg p-4">
+                            <div class="flex items-center mb-3">
+                                <!-- Young African man smiling with motorcycle helmet -->
+                                <img src="https://images.unsplash.com/photo-1506277886164-e25aa3f4ef7f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=60&h=60" 
+                                     alt="Villager profile" 
+                                     class="w-10 h-10 rounded-full mr-3" data-mock="true" />
+                                <div>
+                                    <div class="font-medium" data-bind="villager.name">John Kamau</div>
+                                    <div class="text-sm text-green-100">Nairobi, Kenya</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white/10 rounded-lg p-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="font-medium">This Month's Earnings</span>
+                                <span class="text-lg font-bold">KSh 12,500</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <ul class="space-y-3 text-sm text-green-100">
+                        <li class="flex items-center"><i class="fas fa-check mr-2"></i>Update progress with photos</li>
+                        <li class="flex items-center"><i class="fas fa-check mr-2"></i>Message sponsors</li>
+                        <li class="flex items-center"><i class="fas fa-check mr-2"></i>Track earnings</li>
+                        <li class="flex items-center"><i class="fas fa-check mr-2"></i>Access training materials</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: DualPortalPreview -->
+
+    <!-- @COMPONENT: SuccessStories [villager testimonials, impact stories] -->
+    <section id="stories" class="py-20 bg-slate-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-slate-900 mb-4">Stories of Transformation</h2>
+                <p class="text-xl text-slate-600 max-w-3xl mx-auto">
+                    Real stories from villagers whose lives have been transformed through sponsorship.
+                </p>
+            </div>
+            
+            <!-- @MAP: successStories.map(story => ( -->
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+                    <!-- Young African man with electric motorcycle in urban setting -->
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&h=250" 
+                         alt="Success story - Peter with his electric bike" 
+                         class="w-full h-48 object-cover" data-mock="true" />
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-slate-900 mb-2" data-bind="story.name">Peter Mwangi</h3>
+                        <p class="text-slate-600 mb-4" data-bind="story.location">From Kiambu Village</p>
+                        <p class="text-slate-700 mb-6" data-bind="story.quote">
+                            "Thanks to my sponsor, I now earn KSh 18,000 monthly with my electric bike. 
+                            I've moved my family out of poverty and even started a small savings group in our village."
+                        </p>
+                        <div class="flex items-center justify-between">
+                            <div class="text-sm text-slate-500" data-bind="story.timeframe">Sponsored 8 months ago</div>
+                            <div class="flex items-center text-emerald-500">
+                                <span class="text-sm font-medium">Active Rider</span>
+                                <i class="fas fa-check-circle ml-1"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+                    <!-- Young African woman with motorcycle in rural-urban transition area -->
+                    <img src="https://pixabay.com/get/g9108f996c10b7fb3360aa717c551153868a50b4984b8d0929a8fd5bfb6c5a2c4e1159459bdad87aa2098e0fcafd3a77bce21efece4327e3cf5cbffd662156ff7_1280.jpg" 
+                         alt="Success story - Mary with her electric bike business" 
+                         class="w-full h-48 object-cover" data-mock="true" />
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-slate-900 mb-2" data-bind="story.name">Mary Wanjiku</h3>
+                        <p class="text-slate-600 mb-4" data-bind="story.location">From Nyeri County</p>
+                        <p class="text-slate-700 mb-6" data-bind="story.quote">
+                            "The program gave me more than a bike - it gave me independence. I'm now supporting 
+                            my siblings' education and planning to expand into delivery services."
+                        </p>
+                        <div class="flex items-center justify-between">
+                            <div class="text-sm text-slate-500" data-bind="story.timeframe">Sponsored 1 year ago</div>
+                            <div class="flex items-center text-emerald-500">
+                                <span class="text-sm font-medium">Top Performer</span>
+                                <i class="fas fa-star ml-1"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+                    <!-- Young African man in training or educational setting -->
+                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&h=250" 
+                         alt="Success story - David in training" 
+                         class="w-full h-48 object-cover" data-mock="true" />
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-slate-900 mb-2" data-bind="story.name">David Ochieng</h3>
+                        <p class="text-slate-600 mb-4" data-bind="story.location">From Kisumu Region</p>
+                        <p class="text-slate-700 mb-6" data-bind="story.quote">
+                            "I was heading down a dangerous path before this program. Now I have purpose, 
+                            income, and hope. I'm even mentoring other young people from my village."
+                        </p>
+                        <div class="flex items-center justify-between">
+                            <div class="text-sm text-slate-500" data-bind="story.timeframe">Sponsored 6 months ago</div>
+                            <div class="flex items-center text-emerald-500">
+                                <span class="text-sm font-medium">Mentor</span>
+                                <i class="fas fa-graduation-cap ml-1"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- @END_MAP )) -->
+        </div>
+    </section>
+    <!-- @END_COMPONENT: SuccessStories -->
+
+    <!-- @COMPONENT: ImpactVisualization [progress tracking, metrics dashboard] -->
+    <section id="impact" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-slate-900 mb-4">Track Your Impact</h2>
+                <p class="text-xl text-slate-600 max-w-3xl mx-auto">
+                    See how your sponsorship creates ripple effects in rural communities.
+                </p>
+            </div>
+            
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <div class="space-y-8">
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 bg-kenya-green rounded-full flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-motorcycle text-white"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-slate-900 mb-2">Direct Impact</h3>
+                                <p class="text-slate-600">Your sponsored villager gains sustainable income, digital skills, and clean mobility access.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 bg-trust-blue rounded-full flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-home text-white"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-slate-900 mb-2">Family Impact</h3>
+                                <p class="text-slate-600">Income supports education, healthcare, and improved living conditions for the entire family.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 bg-warm-orange rounded-full flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-users text-white"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-slate-900 mb-2">Community Impact</h3>
+                                <p class="text-slate-600">Success stories inspire others, creating a positive cycle of empowerment in the village.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 bg-emerald-500 rounded-full flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-leaf text-white"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-slate-900 mb-2">Environmental Impact</h3>
+                                <p class="text-slate-600">Electric bikes reduce carbon emissions while providing clean transportation solutions.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-slate-50 rounded-2xl p-8">
+                    <h3 class="text-2xl font-bold text-slate-900 mb-6">Progress Tracking Dashboard</h3>
+                    
+                    <!-- Mock Progress Tracking Interface -->
+                    <div class="space-y-6">
+                        <div class="bg-white rounded-lg p-4 border border-slate-200">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="font-medium text-slate-900">Training Progress</span>
+                                <span class="text-sm text-emerald-600 font-medium">Completed</span>
+                            </div>
+                            <div class="w-full bg-slate-200 rounded-full h-2">
+                                <div class="bg-emerald-500 h-2 rounded-full w-full"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white rounded-lg p-4 border border-slate-200">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="font-medium text-slate-900">Housing Transition</span>
+                                <span class="text-sm text-warm-orange font-medium">Week 6/8</span>
+                            </div>
+                            <div class="w-full bg-slate-200 rounded-full h-2">
+                                <div class="bg-warm-orange h-2 rounded-full" style="width: 75%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white rounded-lg p-4 border border-slate-200">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="font-medium text-slate-900">Monthly Earnings</span>
+                                <span class="text-sm text-kenya-green font-medium">KSh 14,200</span>
+                            </div>
+                            <div class="flex items-center space-x-2 text-sm text-slate-600">
+                                <i class="fas fa-trending-up text-emerald-500"></i>
+                                <span>+18% from last month</span>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white rounded-lg p-4 border border-slate-200">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="font-medium text-slate-900">Latest Update</span>
+                                <span class="text-xs text-slate-500">2 days ago</span>
+                            </div>
+                            <p class="text-sm text-slate-600">"Just completed my first week with the bike! Already earning good money and feeling confident."</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: ImpactVisualization -->
+
+    <!-- @COMPONENT: MessagingPreview [communication interface] -->
+    <section class="py-20 bg-slate-50">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-slate-900 mb-4">Stay Connected</h2>
+                <p class="text-xl text-slate-600">
+                    Direct communication creates lasting relationships between sponsors and villagers.
+                </p>
+            </div>
+            
+            <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+                <div class="bg-kenya-green px-6 py-4 text-white">
+                    <div class="flex items-center space-x-4">
+                        <!-- Young African person profile photo -->
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=40&h=40" 
+                             alt="Villager profile" 
+                             class="w-10 h-10 rounded-full" data-mock="true" />
+                        <div>
+                            <h3 class="font-semibold" data-bind="conversation.villagerName">John Kamau</h3>
+                            <div class="text-sm text-green-100">Online now</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="p-6 space-y-4 max-h-96 overflow-y-auto">
+                    <!-- @MAP: messages.map(message => ( -->
+                    <div class="flex justify-end">
+                        <div class="bg-trust-blue text-white rounded-lg p-3 max-w-xs" data-bind="message.content">
+                            Hi John! How is your training going?
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-start">
+                        <div class="bg-slate-100 text-slate-900 rounded-lg p-3 max-w-xs" data-bind="message.content">
+                            Hello! Training is going great! I passed my NTSA test yesterday. Thank you so much for your support! 🙏
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-end">
+                        <div class="bg-trust-blue text-white rounded-lg p-3 max-w-xs" data-bind="message.content">
+                            That's wonderful news! I'm so proud of you. When do you start with the bike?
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-start">
+                        <div class="bg-slate-100 text-slate-900 rounded-lg p-3 max-w-xs" data-bind="message.content">
+                            Next week! I'll send you photos. I'm excited to start earning and support my family.
+                        </div>
+                    </div>
+                    <!-- @END_MAP )) -->
+                </div>
+                
+                <div class="border-t border-slate-200 p-4">
+                    <div class="flex space-x-4">
+                        <input type="text" placeholder="Type your message..." 
+                               class="flex-1 border border-slate-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-kenya-green focus:border-transparent" 
+                               data-event="input:updateMessageInput" />
+                        <button class="bg-kenya-green text-white px-6 py-2 rounded-lg font-medium hover:bg-kenya-green/90 transition-colors" 
+                                data-event="click:sendMessage">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: MessagingPreview -->
+
+    <!-- @COMPONENT: CallToAction [final conversion section] -->
+    <section class="py-20 bg-gradient-to-r from-kenya-green to-emerald-600 text-white">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-4xl lg:text-5xl font-bold mb-6">Ready to Change a Life?</h2>
+            <p class="text-xl text-slate-200 mb-8 max-w-2xl mx-auto leading-relaxed">
+                Join hundreds of sponsors who are already making a difference. Your contribution creates 
+                lasting impact in rural Kenya communities.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+                <button class="bg-warm-orange text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-warm-orange/90 transition-colors" data-event="click:startSponsorship">
+                    <i class="fas fa-heart mr-2"></i>Sponsor Now - From KSh 8,000
+                </button>
+                <button class="border-2 border-white text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-white hover:text-kenya-green transition-colors" data-event="click:learnMore">
+                    <i class="fas fa-info-circle mr-2"></i>Learn More
+                </button>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-6 text-center">
+                <div>
+                    <div class="text-2xl font-bold mb-2">48 Hours</div>
+                    <div class="text-slate-200">Average matching time</div>
+                </div>
+                <div>
+                    <div class="text-2xl font-bold mb-2">92%</div>
+                    <div class="text-slate-200">Success rate</div>
+                </div>
+                <div>
+                    <div class="text-2xl font-bold mb-2">24/7</div>
+                    <div class="text-slate-200">Support available</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: CallToAction -->
+
+    <!-- @COMPONENT: Footer [contact, legal, social] -->
+    <footer class="bg-slate-900 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">SponsorVillager</h3>
+                    <p class="text-slate-400 mb-4">
+                        Empowering rural youth through clean mobility and digital platforms.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-slate-400 hover:text-white transition-colors" data-event="click:openFacebook">
+                            <i class="fab fa-facebook"></i>
+                        </a>
+                        <a href="#" class="text-slate-400 hover:text-white transition-colors" data-event="click:openTwitter">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="text-slate-400 hover:text-white transition-colors" data-event="click:openInstagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="text-slate-400 hover:text-white transition-colors" data-event="click:openLinkedin">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">For Sponsors</h4>
+                    <ul class="space-y-2 text-slate-400">
+                        <li><a href="#" class="hover:text-white transition-colors">How it Works</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Sponsorship Packages</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Success Stories</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Impact Reports</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">For Villagers</h4>
+                    <ul class="space-y-2 text-slate-400">
+                        <li><a href="#" class="hover:text-white transition-colors">Apply for Program</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Training Resources</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Villager Portal</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Support Center</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Contact</h4>
+                    <ul class="space-y-2 text-slate-400">
+                        <li class="flex items-center"><i class="fas fa-envelope mr-2"></i>hello@sponsorvillager.org</li>
+                        <li class="flex items-center"><i class="fas fa-phone mr-2"></i>+254 700 123 456</li>
+                        <li class="flex items-center"><i class="fas fa-map-marker-alt mr-2"></i>Nairobi, Kenya</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-slate-800 mt-8 pt-8 text-center text-slate-400">
+                <p>&copy; 2024 SponsorVillager. All rights reserved. | Privacy Policy | Terms of Service</p>
+            </div>
+        </div>
+    </footer>
+    <!-- @END_COMPONENT: Footer -->
+
+    <script>
+    (function() {
+        // TODO: Implement authentication system for sponsors and villagers
+        // TODO: Implement payment processing for sponsorship packages
+        // TODO: Implement real-time messaging between sponsors and villagers
+        // TODO: Implement progress tracking with photo uploads
+        // TODO: Implement mobile-responsive villager portal
+        
+        // Mock interactive functionality for demo purposes
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+            
+            // Package selection handlers
+            const packageButtons = document.querySelectorAll('[data-event*="Package"]');
+            packageButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // TODO: Navigate to package selection and payment flow
+                    console.log('Package selected:', this.textContent);
+                });
+            });
+            
+            // Portal switching
+            const portalButtons = document.querySelectorAll('[data-event*="Portal"]');
+            portalButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // TODO: Implement portal switching logic
+                    console.log('Portal switch:', this.getAttribute('data-event'));
+                });
+            });
+            
+            // Mock message sending
+            const sendButton = document.querySelector('[data-event="click:sendMessage"]');
+            if (sendButton) {
+                sendButton.addEventListener('click', function() {
+                    // TODO: Implement real message sending
+                    console.log('Message would be sent');
+                });
+            }
+        });
+    })();
+    </script>
+
+</body>
+</html>

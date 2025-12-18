@@ -4,31 +4,16 @@ import { WebSocketServer, WebSocket } from "ws";
 import Stripe from "stripe";
 import { z } from "zod";
 import { storage } from "./storage";
-import { setupAuth, isAuthenticated } from "./replitAuth";
-import { 
-  insertVillagerSchema, 
-  insertSponsorshipSchema, 
+import { setupAuth } from "./auth";
+import multer from "multer";
+import path from "path";
+import fs from "fs";
+import {
+  insertVillagerSchema,
+  insertSponsorshipSchema,
   insertMessageSchema,
-  insertProgressUpdateSchema 
+  insertProgressUpdateSchema
 } from "@shared/schema";
-
-// Extend Express types for authenticated user
-declare global {
-  namespace Express {
-    interface User {
-      claims: {
-        sub: string;
-        email?: string;
-        first_name?: string;
-        last_name?: string;
-        profile_image_url?: string;
-      };
-      access_token?: string;
-      refresh_token?: string;
-      expires_at?: number;
-    }
-  }
-}
 
 // Initialize Stripe only if credentials are available
 let stripe: Stripe | null = null;
@@ -43,21 +28,57 @@ if (process.env.STRIPE_SECRET_KEY) {
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Auth middleware
-  await setupAuth(app);
+  setupAuth(app);
+
+  // Setup multer for file uploads
+  const uploadDir = path.join(process.cwd(), "public", "uploads");
+  if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true });
+  }
+
+  const multerStorage = multer.diskStorage({
+    destination: (_req, _file, cb) => {
+      cb(null, uploadDir);
+    },
+    filename: (_req, file, cb) => {
+      const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+      cb(null, file.fieldname + "-" + uniqueSuffix + path.extname(file.originalname));
+    },
+  });
+
+  const upload = multer({
+    storage: multerStorage,
+    limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
+  });
+
+  // Upload route
+  app.post("/api/upload", upload.single("file"), (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+    if (!req.file) {
+      return res.status(400).json({ message: "No file uploaded" });
+    }
+    const filePath = `/uploads/${req.file.filename}`;
+    res.json({ url: filePath });
+  });
 
   // Auth routes
-  app.get('/api/auth/user', isAuthenticated, async (req, res) => {
+  app.get('/api/auth/user', (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+    res.json(req.user);
+  });
+
+  // Sponsor routes
+  app.get('/api/sponsors/rankings', async (_req, res) => {
     try {
-      const userId = req.user?.claims.sub;
-      if (!userId) {
-        return res.status(401).json({ message: "Unauthorized" });
-      }
-      
-      const user = await storage.getUser(userId);
-      res.json(user);
+      const rankings = await storage.getSponsorRankings();
+      res.json(rankings);
     } catch (error) {
-      console.error("Error fetching user:", error);
-      res.status(500).json({ message: "Failed to fetch user" });
+      console.error("Error fetching sponsor rankings:", error);
+      res.status(500).json({ message: "Failed to fetch sponsor rankings" });
     }
   });
 
@@ -72,14 +93,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Get villager profile for authenticated villager (must come before :id route)
-  app.get('/api/villagers/profile', isAuthenticated, async (req, res) => {
-    try {
-      const userId = req.user?.claims.sub;
-      if (!userId) {
-        return res.status(401).json({ message: "Unauthorized" });
-      }
+  // Get villager profile for authenticated villager
+  app.get('/api/villagers/profile', async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
 
+    try {
+      const userId = (req.user as any).id;
       const villager = await storage.getVillagerByUserId(userId);
       if (!villager) {
         return res.status(404).json({ message: "No villager profile found" });
@@ -104,18 +125,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post('/api/villagers', isAuthenticated, async (req, res) => {
-    try {
-      const userId = req.user?.claims.sub;
-      if (!userId) {
-        return res.status(401).json({ message: "Unauthorized" });
-      }
+  app.post('/api/villagers', async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
 
+    try {
+      const userId = (req.user as any).id;
       const validatedData = insertVillagerSchema.parse({
         ...req.body,
         userId,
       });
-      
+
       const villager = await storage.createVillager(validatedData);
       res.status(201).json(villager);
     } catch (error) {
@@ -127,15 +148,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.put('/api/villagers/:id', isAuthenticated, async (req, res) => {
+  app.put('/api/villagers/:id', async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
     try {
-      const userId = req.user?.claims.sub;
+      const userId = (req.user as any).id;
       const villager = await storage.getVillager(req.params.id);
-      
+
       if (!villager) {
         return res.status(404).json({ message: "Villager not found" });
       }
-      
+
       if (villager.userId !== userId) {
         return res.status(403).json({ message: "Forbidden" });
       }
@@ -149,18 +174,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Sponsorship routes
-  app.post('/api/sponsorships', isAuthenticated, async (req, res) => {
-    try {
-      const sponsorId = req.user?.claims.sub;
-      if (!sponsorId) {
-        return res.status(401).json({ message: "Unauthorized" });
-      }
+  app.post('/api/sponsorships', async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
 
+    try {
+      const sponsorId = (req.user as any).id;
       const validatedData = insertSponsorshipSchema.parse({
         ...req.body,
         sponsorId,
       });
-      
+
       const sponsorship = await storage.createSponsorship(validatedData);
       res.status(201).json(sponsorship);
     } catch (error) {
@@ -172,13 +197,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get('/api/my-sponsorships', isAuthenticated, async (req, res) => {
-    try {
-      const sponsorId = req.user?.claims.sub;
-      if (!sponsorId) {
-        return res.status(401).json({ message: "Unauthorized" });
-      }
+  app.get('/api/my-sponsorships', async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
 
+    try {
+      const sponsorId = (req.user as any).id;
       const sponsorships = await storage.getSponsorshipsBySponsor(sponsorId);
       res.json(sponsorships);
     } catch (error) {
@@ -188,17 +213,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Payment routes
-  app.post("/api/create-payment-intent", isAuthenticated, async (req, res) => {
+  app.post("/api/create-payment-intent", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
     try {
       if (!stripe) {
-        return res.status(503).json({ 
-          message: "Payment processing is not configured. Please contact the administrator." 
+        return res.status(503).json({
+          message: "Payment processing is not configured. Please contact the administrator."
         });
       }
 
       const { amount, villagerId, sponsorshipType, componentType } = req.body;
-      const sponsorId = req.user?.claims.sub;
-      
+      const sponsorId = (req.user as any).id;
+
       if (!sponsorId) {
         return res.status(401).json({ message: "Unauthorized" });
       }
@@ -208,7 +236,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         currency: "kes", // Kenyan Shillings
         metadata: {
           villagerId,
-          sponsorId,
+          sponsorId: sponsorId.toString(),
           sponsorshipType,
           componentType: componentType || 'full',
         },
@@ -234,33 +262,33 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Webhook to handle payment confirmations
   app.post("/api/stripe-webhook", async (req, res) => {
     if (!stripe) {
-      return res.status(503).json({ 
-        message: "Payment processing is not configured." 
+      return res.status(503).json({
+        message: "Payment processing is not configured."
       });
     }
 
     const sig = req.headers['stripe-signature'] as string;
-    
+
     try {
       const event = stripe.webhooks.constructEvent(
-        req.body, 
-        sig, 
+        req.body,
+        sig,
         process.env.STRIPE_WEBHOOK_SECRET!
       );
 
       if (event.type === 'payment_intent.succeeded') {
         const paymentIntent = event.data.object as Stripe.PaymentIntent;
-        
+
         // Update sponsorship status
         const sponsorships = await storage.getSponsorshipsByVillager(
           paymentIntent.metadata.villagerId
         );
-        
+
         const sponsorship = sponsorships.find(s => s.stripePaymentIntentId === paymentIntent.id);
         if (sponsorship) {
           await storage.updateSponsorshipPaymentStatus(
-            sponsorship.id, 
-            'completed', 
+            sponsorship.id,
+            'completed',
             paymentIntent.id
           );
         }
@@ -274,9 +302,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Message routes
-  app.post('/api/messages', isAuthenticated, async (req, res) => {
+  app.post('/api/messages', async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
     try {
-      const senderId = req.user?.claims.sub;
+      const senderId = (req.user as any).id;
       if (!senderId) {
         return res.status(401).json({ message: "Unauthorized" });
       }
@@ -285,7 +317,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         ...req.body,
         senderId,
       });
-      
+
       const message = await storage.createMessage(validatedData);
       res.status(201).json(message);
     } catch (error) {
@@ -297,7 +329,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get('/api/messages/:villagerId', isAuthenticated, async (req, res) => {
+  app.get('/api/messages/:villagerId', async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
     try {
       const messages = await storage.getMessages(req.params.villagerId);
       res.json(messages);
@@ -308,7 +343,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Progress routes
-  app.post('/api/progress', isAuthenticated, async (req, res) => {
+  app.post('/api/progress', async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
     try {
       const validatedData = insertProgressUpdateSchema.parse(req.body);
       const update = await storage.createProgressUpdate(validatedData);
@@ -336,14 +374,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // WebSocket server for real-time messaging
   const wss = new WebSocketServer({ server: httpServer, path: '/ws' });
-  
+
   wss.on('connection', (ws, req) => {
     console.log('WebSocket connection established');
-    
+
     ws.on('message', async (data) => {
       try {
         const message = JSON.parse(data.toString());
-        
+
         if (message.type === 'chat') {
           // Broadcast to all connected clients
           wss.clients.forEach((client) => {

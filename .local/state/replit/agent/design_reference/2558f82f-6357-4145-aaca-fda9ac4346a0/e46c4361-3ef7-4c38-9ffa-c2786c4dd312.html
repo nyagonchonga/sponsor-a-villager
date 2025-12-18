@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sponsor a Villager - Investment Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                colors: {
+                    'kenya-green': '#16A085',
+                    'kenya-gold': '#F39C12',
+                    'kenya-blue': '#2C3E50',
+                    'success-green': '#27AE60',
+                    'muted-gray': '#95A5A6'
+                },
+                fontFamily: {
+                    'inter': ['Inter', 'system-ui', 'sans-serif'],
+                }
+            }
+        }
+    };
+    </script>
+</head>
+<body class="bg-gray-50 font-inter">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm border-b">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-kenya-green rounded-lg flex items-center justify-center">
+                        <i class="fas fa-motorcycle text-white text-lg"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold text-kenya-blue">VillagerInvest</h1>
+                        <p class="text-xs text-muted-gray">Empowering Rural Kenya</p>
+                    </div>
+                </div>
+                <div class="hidden md:flex items-center space-x-6">
+                    <a href="#opportunities" class="text-kenya-blue hover:text-kenya-green transition-colors">Opportunities</a>
+                    <a href="#dashboard" class="text-kenya-blue hover:text-kenya-green transition-colors">Dashboard</a>
+                    <a href="#about" class="text-kenya-blue hover:text-kenya-green transition-colors">About</a>
+                    <button class="bg-kenya-green text-white px-4 py-2 rounded-lg hover:bg-opacity-90 transition-all">
+                        <i class="fas fa-user-circle mr-2"></i>Login
+                    </button>
+                </div>
+                <button class="md:hidden">
+                    <i class="fas fa-bars text-kenya-blue"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-r from-kenya-green to-success-green text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h1 class="text-4xl md:text-5xl font-bold mb-6">Invest in Proven Villagers, Earn Daily Returns</h1>
+                    <p class="text-xl mb-8 text-green-100">Support qualified rural Kenyans with verified earning histories. Get daily returns from their electric bike operations.</p>
+                    <div class="flex flex-col sm:flex-row gap-4 mb-8">
+                        <button class="bg-white text-kenya-green px-8 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-all">
+                            <i class="fas fa-chart-line mr-2"></i>View Returns
+                        </button>
+                        <button class="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-kenya-green transition-all">
+                            <i class="fas fa-play mr-2"></i>Watch How It Works
+                        </button>
+                    </div>
+                    <div class="grid grid-cols-3 gap-6 text-center">
+                        <div>
+                            <div class="text-3xl font-bold">1,000</div>
+                            <div class="text-sm text-green-100">KSh Daily Returns</div>
+                        </div>
+                        <div>
+                            <div class="text-3xl font-bold">365K</div>
+                            <div class="text-sm text-green-100">Annual Potential</div>
+                        </div>
+                        <div>
+                            <div class="text-3xl font-bold">24</div>
+                            <div class="text-sm text-green-100">Active Villagers</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="relative">
+                    <!-- A successful African entrepreneur on a motorcycle in Nairobi with modern buildings in background -->
+                    <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=600" 
+                         alt="Motorcycle taxi driver in Nairobi" 
+                         class="rounded-xl shadow-2xl w-full h-auto" />
+                    <div class="absolute -bottom-6 -left-6 bg-white p-4 rounded-lg shadow-xl">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-3 h-3 bg-success-green rounded-full animate-pulse"></div>
+                            <span class="text-kenya-blue font-semibold">Live Earnings: KSh 1,250</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Investment Opportunities -->
+    <section id="opportunities" class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-kenya-blue mb-4">Featured Investment Opportunities</h2>
+                <p class="text-muted-gray max-w-2xl mx-auto">All villagers are pre-qualified with 5+ months experience and verified earnings history</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+                <!-- @COMPONENT: VillagerCard [villager profile with investment details] -->
+                <div class="bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-lg transition-shadow overflow-hidden">
+                    <div class="relative">
+                        <!-- A young Kenyan man with his electric motorcycle in a rural setting -->
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&h=300" 
+                             alt="Samuel - Qualified Villager" 
+                             class="w-full h-48 object-cover" data-mock="true" />
+                        <div class="absolute top-3 right-3 bg-success-green text-white px-2 py-1 rounded-full text-xs font-semibold">
+                            <i class="fas fa-check-circle mr-1"></i>Verified
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="font-bold text-lg text-kenya-blue" data-mock="true">Samuel Kiprotich</h3>
+                            <div class="flex items-center">
+                                <div class="flex text-kenya-gold">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <span class="text-sm text-muted-gray ml-2" data-mock="true">4.9</span>
+                            </div>
+                        </div>
+                        <p class="text-muted-gray text-sm mb-4" data-mock="true">Nakuru → Nairobi • 8 months experience</p>
+                        
+                        <div class="grid grid-cols-2 gap-4 mb-4">
+                            <div class="text-center p-3 bg-gray-50 rounded-lg">
+                                <div class="font-bold text-success-green text-lg" data-bind="villager.dailyEarnings">KSh 1,150</div>
+                                <div class="text-xs text-muted-gray">Avg Daily</div>
+                            </div>
+                            <div class="text-center p-3 bg-gray-50 rounded-lg">
+                                <div class="font-bold text-kenya-blue text-lg" data-bind="villager.totalEarnings">KSh 276,000</div>
+                                <div class="text-xs text-muted-gray">Total Earned</div>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="text-muted-gray">Funding Progress</span>
+                                <span class="font-semibold text-kenya-blue" data-bind="villager.fundingProgress">65%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-kenya-green h-2 rounded-full" style="width: 65%"></div>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-between items-center mb-4">
+                            <div>
+                                <div class="text-sm text-muted-gray">Investment Needed</div>
+                                <div class="font-bold text-lg text-kenya-blue" data-bind="villager.investmentAmount">KSh 48,000</div>
+                            </div>
+                            <div>
+                                <div class="text-sm text-muted-gray">Expected Annual Return</div>
+                                <div class="font-bold text-lg text-success-green" data-bind="villager.expectedReturn">KSh 365,000</div>
+                            </div>
+                        </div>
+
+                        <button class="w-full bg-kenya-green text-white py-3 rounded-lg font-semibold hover:bg-opacity-90 transition-all" 
+                                data-event="click:handleInvestment" data-implementation="Should open investment modal with contract details">
+                            <i class="fas fa-hand-holding-usd mr-2"></i>Invest Now
+                        </button>
+                    </div>
+                </div>
+                <!-- @END_COMPONENT: VillagerCard -->
+
+                <!-- Second Villager Card -->
+                <div class="bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-lg transition-shadow overflow-hidden">
+                    <div class="relative">
+                        <!-- A young Kenyan woman with her electric motorcycle in urban Nairobi -->
+                        <img src="https://pixabay.com/get/ga0427fb997ed904cf04af7fdf6926914d62267184c1eb5f7b1d079ac11fcaa6da3e833d4cfc070e25088d244d7fa0d94446a5c72ebaaaf2dd7b17cf99a756581_1280.jpg" 
+                             alt="Grace - Qualified Villager" 
+                             class="w-full h-48 object-cover" data-mock="true" />
+                        <div class="absolute top-3 right-3 bg-success-green text-white px-2 py-1 rounded-full text-xs font-semibold">
+                            <i class="fas fa-check-circle mr-1"></i>Verified
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="font-bold text-lg text-kenya-blue" data-mock="true">Grace Wanjiru</h3>
+                            <div class="flex items-center">
+                                <div class="flex text-kenya-gold">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <span class="text-sm text-muted-gray ml-2" data-mock="true">5.0</span>
+                            </div>
+                        </div>
+                        <p class="text-muted-gray text-sm mb-4" data-mock="true">Kisumu → Nairobi • 6 months experience</p>
+                        
+                        <div class="grid grid-cols-2 gap-4 mb-4">
+                            <div class="text-center p-3 bg-gray-50 rounded-lg">
+                                <div class="font-bold text-success-green text-lg" data-mock="true">KSh 1,280</div>
+                                <div class="text-xs text-muted-gray">Avg Daily</div>
+                            </div>
+                            <div class="text-center p-3 bg-gray-50 rounded-lg">
+                                <div class="font-bold text-kenya-blue text-lg" data-mock="true">KSh 230,400</div>
+                                <div class="text-xs text-muted-gray">Total Earned</div>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="text-muted-gray">Funding Progress</span>
+                                <span class="font-semibold text-kenya-blue" data-mock="true">82%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-kenya-green h-2 rounded-full" style="width: 82%"></div>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-between items-center mb-4">
+                            <div>
+                                <div class="text-sm text-muted-gray">Investment Needed</div>
+                                <div class="font-bold text-lg text-kenya-blue" data-mock="true">KSh 8,640</div>
+                            </div>
+                            <div>
+                                <div class="text-sm text-muted-gray">Expected Annual Return</div>
+                                <div class="font-bold text-lg text-success-green" data-mock="true">KSh 467,200</div>
+                            </div>
+                        </div>
+
+                        <button class="w-full bg-kenya-green text-white py-3 rounded-lg font-semibold hover:bg-opacity-90 transition-all">
+                            <i class="fas fa-hand-holding-usd mr-2"></i>Invest Now
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Third Villager Card -->
+                <div class="bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-lg transition-shadow overflow-hidden">
+                    <div class="relative">
+                        <!-- A young Kenyan man with his electric bike at a charging station -->
+                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&h=300" 
+                             alt="David - Qualified Villager" 
+                             class="w-full h-48 object-cover" data-mock="true" />
+                        <div class="absolute top-3 right-3 bg-success-green text-white px-2 py-1 rounded-full text-xs font-semibold">
+                            <i class="fas fa-check-circle mr-1"></i>Verified
+                        </div>
+                        <div class="absolute top-3 left-3 bg-kenya-gold text-white px-2 py-1 rounded-full text-xs font-semibold">
+                            <i class="fas fa-crown mr-1"></i>Top Performer
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="font-bold text-lg text-kenya-blue" data-mock="true">David Ochieng</h3>
+                            <div class="flex items-center">
+                                <div class="flex text-kenya-gold">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <span class="text-sm text-muted-gray ml-2" data-mock="true">5.0</span>
+                            </div>
+                        </div>
+                        <p class="text-muted-gray text-sm mb-4" data-mock="true">Mombasa → Nairobi • 12 months experience</p>
+                        
+                        <div class="grid grid-cols-2 gap-4 mb-4">
+                            <div class="text-center p-3 bg-gray-50 rounded-lg">
+                                <div class="font-bold text-success-green text-lg" data-mock="true">KSh 1,420</div>
+                                <div class="text-xs text-muted-gray">Avg Daily</div>
+                            </div>
+                            <div class="text-center p-3 bg-gray-50 rounded-lg">
+                                <div class="font-bold text-kenya-blue text-lg" data-mock="true">KSh 518,300</div>
+                                <div class="text-xs text-muted-gray">Total Earned</div>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="text-muted-gray">Funding Progress</span>
+                                <span class="font-semibold text-success-green" data-mock="true">Fully Funded</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-success-green h-2 rounded-full" style="width: 100%"></div>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-between items-center mb-4">
+                            <div>
+                                <div class="text-sm text-muted-gray">Investment Amount</div>
+                                <div class="font-bold text-lg text-kenya-blue" data-mock="true">KSh 48,000</div>
+                            </div>
+                            <div>
+                                <div class="text-sm text-muted-gray">Annual Return</div>
+                                <div class="font-bold text-lg text-success-green" data-mock="true">KSh 518,300</div>
+                            </div>
+                        </div>
+
+                        <button class="w-full bg-muted-gray text-white py-3 rounded-lg font-semibold cursor-not-allowed" disabled>
+                            <i class="fas fa-check mr-2"></i>Fully Funded
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center">
+                <button class="bg-kenya-blue text-white px-8 py-3 rounded-lg font-semibold hover:bg-opacity-90 transition-all">
+                    <i class="fas fa-plus mr-2"></i>View All Opportunities
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Investment Dashboard Preview -->
+    <section id="dashboard" class="py-16 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-kenya-blue mb-4">Track Your Investments</h2>
+                <p class="text-muted-gray max-w-2xl mx-auto">Real-time monitoring of your villager investments with daily earning updates and performance analytics</p>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-8 mb-8">
+                <div class="lg:col-span-2">
+                    <div class="bg-white rounded-xl shadow-sm p-6">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-xl font-bold text-kenya-blue">Portfolio Performance</h3>
+                            <div class="flex items-center space-x-2">
+                                <button class="text-sm px-3 py-1 bg-kenya-green text-white rounded-full">30D</button>
+                                <button class="text-sm px-3 py-1 text-muted-gray hover:bg-gray-100 rounded-full">90D</button>
+                                <button class="text-sm px-3 py-1 text-muted-gray hover:bg-gray-100 rounded-full">1Y</button>
+                            </div>
+                        </div>
+                        <div class="h-64">
+                            <canvas id="portfolioChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <div class="bg-white rounded-xl shadow-sm p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h4 class="font-semibold text-kenya-blue">Portfolio Summary</h4>
+                            <i class="fas fa-wallet text-kenya-green"></i>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex justify-between">
+                                <span class="text-muted-gray">Total Invested</span>
+                                <span class="font-semibold text-kenya-blue" data-bind="portfolio.totalInvested">KSh 144,000</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-muted-gray">Current Value</span>
+                                <span class="font-semibold text-success-green" data-bind="portfolio.currentValue">KSh 167,250</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-muted-gray">Total Returns</span>
+                                <span class="font-semibold text-success-green" data-bind="portfolio.totalReturns">+KSh 23,250</span>
+                            </div>
+                            <div class="flex justify-between pt-2 border-t">
+                                <span class="text-muted-gray">ROI</span>
+                                <span class="font-bold text-success-green text-lg" data-bind="portfolio.roi">+16.15%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-sm p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h4 class="font-semibold text-kenya-blue">Daily Earnings</h4>
+                            <i class="fas fa-chart-line text-kenya-green"></i>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-success-green mb-1" data-bind="dailyEarnings.today">KSh 3,850</div>
+                            <div class="text-sm text-muted-gray mb-3">Today's Returns</div>
+                            <div class="flex items-center justify-center text-sm text-success-green">
+                                <i class="fas fa-arrow-up mr-1"></i>
+                                <span data-bind="dailyEarnings.growth">+8.5% vs yesterday</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Active Investments Table -->
+            <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+                <div class="p-6 border-b">
+                    <h3 class="text-xl font-bold text-kenya-blue">Active Investments</h3>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-muted-gray uppercase tracking-wider">Villager</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-muted-gray uppercase tracking-wider">Investment</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-muted-gray uppercase tracking-wider">Daily Earnings</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-muted-gray uppercase tracking-wider">Total Returns</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-muted-gray uppercase tracking-wider">Status</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-muted-gray uppercase tracking-wider">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <!-- @MAP: investments.map(investment => ( -->
+                            <tr data-mock="true">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div class="flex-shrink-0 h-10 w-10">
+                                            <!-- Profile image of Samuel -->
+                                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=100&h=100" 
+                                                 alt="Samuel Profile" 
+                                                 class="h-10 w-10 rounded-full object-cover" />
+                                        </div>
+                                        <div class="ml-4">
+                                            <div class="text-sm font-medium text-kenya-blue">Samuel Kiprotich</div>
+                                            <div class="text-sm text-muted-gray">Nakuru → Nairobi</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-kenya-blue">KSh 48,000</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-success-green">KSh 1,150</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-success-green">KSh 8,050</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                        <div class="w-2 h-2 bg-green-400 rounded-full mr-1"></div>
+                                        Active
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                    <button class="text-kenya-green hover:text-kenya-blue">View Details</button>
+                                </td>
+                            </tr>
+                            <tr data-mock="true">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div class="flex-shrink-0 h-10 w-10">
+                                            <!-- Profile image of Grace -->
+                                            <img src="https://pixabay.com/get/gc54289c4f372d5f1349ae96f9d222ca590e19516c69dce90f3d2d69da97f501250354a5c499f6bafcc362f890eb01314b360a41c1b071cbbcf0a602fae4b2b2a_1280.jpg" 
+                                                 alt="Grace Profile" 
+                                                 class="h-10 w-10 rounded-full object-cover" />
+                                        </div>
+                                        <div class="ml-4">
+                                            <div class="text-sm font-medium text-kenya-blue">Grace Wanjiru</div>
+                                            <div class="text-sm text-muted-gray">Kisumu → Nairobi</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-kenya-blue">KSh 48,000</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-success-green">KSh 1,280</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-success-green">KSh 7,680</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                        <div class="w-2 h-2 bg-green-400 rounded-full mr-1"></div>
+                                        Active
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                    <button class="text-kenya-green hover:text-kenya-blue">View Details</button>
+                                </td>
+                            </tr>
+                            <tr data-mock="true">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div class="flex-shrink-0 h-10 w-10">
+                                            <!-- Profile image of David -->
+                                            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=100&h=100" 
+                                                 alt="David Profile" 
+                                                 class="h-10 w-10 rounded-full object-cover" />
+                                        </div>
+                                        <div class="ml-4">
+                                            <div class="text-sm font-medium text-kenya-blue">David Ochieng</div>
+                                            <div class="text-sm text-muted-gray">Mombasa → Nairobi</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-kenya-blue">KSh 48,000</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-success-green">KSh 1,420</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-success-green">KSh 7,520</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                        <div class="w-2 h-2 bg-green-400 rounded-full mr-1"></div>
+                                        Active
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                    <button class="text-kenya-green hover:text-kenya-blue">View Details</button>
+                                </td>
+                            </tr>
+                            <!-- @END_MAP )) -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-kenya-blue mb-4">How VillagerInvest Works</h2>
+                <p class="text-muted-gray max-w-2xl mx-auto">A transparent, secure way to invest in proven rural talent and earn consistent returns</p>
+            </div>
+
+            <div class="grid md:grid-cols-4 gap-8 mb-12">
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-kenya-green rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-user-check text-white text-xl"></i>
+                    </div>
+                    <h3 class="font-bold text-kenya-blue mb-2">Villager Verification</h3>
+                    <p class="text-muted-gray text-sm">We pre-qualify villagers with 5+ months experience and verified earning histories</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-kenya-green rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-hand-holding-usd text-white text-xl"></i>
+                    </div>
+                    <h3 class="font-bold text-kenya-blue mb-2">Secure Investment</h3>
+                    <p class="text-muted-gray text-sm">Invest in qualified villagers with transparent contracts and clear terms</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-kenya-green rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-motorcycle text-white text-xl"></i>
+                    </div>
+                    <h3 class="font-bold text-kenya-blue mb-2">Daily Operations</h3>
+                    <p class="text-muted-gray text-sm">Villagers work with electric bikes, earning daily income from passenger and delivery services</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-kenya-green rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-coins text-white text-xl"></i>
+                    </div>
+                    <h3 class="font-bold text-kenya-blue mb-2">Daily Returns</h3>
+                    <p class="text-muted-gray text-sm">Receive daily returns from villager earnings with full transparency and tracking</p>
+                </div>
+            </div>
+
+            <div class="bg-gray-50 rounded-2xl p-8 text-center">
+                <h3 class="text-2xl font-bold text-kenya-blue mb-4">Investment Details</h3>
+                <div class="grid md:grid-cols-3 gap-6 mb-6">
+                    <div>
+                        <div class="text-3xl font-bold text-kenya-green mb-2">KSh 48,000</div>
+                        <div class="text-muted-gray">Minimum Investment</div>
+                    </div>
+                    <div>
+                        <div class="text-3xl font-bold text-kenya-green mb-2">1,000+</div>
+                        <div class="text-muted-gray">Daily Returns (KSh)</div>
+                    </div>
+                    <div>
+                        <div class="text-3xl font-bold text-kenya-green mb-2">12</div>
+                        <div class="text-muted-gray">Contract Months</div>
+                    </div>
+                </div>
+                <p class="text-muted-gray mb-6">Expected annual return of 365,000 KSh based on average daily earnings of 1,000 KSh over 12 months</p>
+                <button class="bg-kenya-green text-white px-8 py-3 rounded-lg font-semibold hover:bg-opacity-90 transition-all">
+                    <i class="fas fa-calculator mr-2"></i>Calculate Your Returns
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="py-16 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-kenya-blue mb-4">What Our Investors Say</h2>
+                <p class="text-muted-gray max-w-2xl mx-auto">Join hundreds of investors who are earning consistent returns while empowering rural communities</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-white rounded-xl shadow-sm p-6">
+                    <div class="flex items-center mb-4">
+                        <div class="flex text-kenya-gold mr-3">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <span class="text-sm text-muted-gray" data-mock="true">5.0</span>
+                    </div>
+                    <p class="text-muted-gray mb-4" data-mock="true">"I've been investing in villagers for 6 months and consistently receive daily returns. It's amazing to see the impact while earning great returns."</p>
+                    <div class="flex items-center">
+                        <!-- Professional African investor headshot -->
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=60&h=60" 
+                             alt="Michael Investor" 
+                             class="w-12 h-12 rounded-full mr-3 object-cover" data-mock="true" />
+                        <div>
+                            <div class="font-semibold text-kenya-blue" data-mock="true">Michael Waweru</div>
+                            <div class="text-sm text-muted-gray" data-mock="true">Tech Executive, Nairobi</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-sm p-6">
+                    <div class="flex items-center mb-4">
+                        <div class="flex text-kenya-gold mr-3">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <span class="text-sm text-muted-gray" data-mock="true">5.0</span>
+                    </div>
+                    <p class="text-muted-gray mb-4" data-mock="true">"The transparency and daily tracking make this platform exceptional. I can see exactly how my investments are performing in real-time."</p>
+                    <div class="flex items-center">
+                        <!-- Professional African businesswoman headshot -->
+                        <img src="https://pixabay.com/get/g32745145530fc6bc90096896a55149c5ce215409b7c62d805b4bb029cf2b3a0256ab644c40b6aa45a4d78e53b648cc9c2a362deca4f80d09901bce78fd11b720_1280.jpg" 
+                             alt="Sarah Investor" 
+                             class="w-12 h-12 rounded-full mr-3 object-cover" data-mock="true" />
+                        <div>
+                            <div class="font-semibold text-kenya-blue" data-mock="true">Sarah Njeri</div>
+                            <div class="text-sm text-muted-gray" data-mock="true">Business Owner, Mombasa</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-sm p-6">
+                    <div class="flex items-center mb-4">
+                        <div class="flex text-kenya-gold mr-3">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <span class="text-sm text-muted-gray" data-mock="true">5.0</span>
+                    </div>
+                    <p class="text-muted-gray mb-4" data-mock="true">"Started with one villager, now investing in three. The returns have been consistent and the social impact is incredible."</p>
+                    <div class="flex items-center">
+                        <!-- Professional African entrepreneur headshot -->
+                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=60&h=60" 
+                             alt="James Investor" 
+                             class="w-12 h-12 rounded-full mr-3 object-cover" data-mock="true" />
+                        <div>
+                            <div class="font-semibold text-kenya-blue" data-mock="true">James Mutua</div>
+                            <div class="text-sm text-muted-gray" data-mock="true">Doctor, Kisumu</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="py-16 bg-kenya-blue text-white">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-6">Start Investing in Rural Kenya Today</h2>
+            <p class="text-xl mb-8 text-blue-100">Join our platform and start earning daily returns while empowering rural youth with sustainable livelihoods.</p>
+            
+            <div class="grid md:grid-cols-3 gap-6 mb-8">
+                <div class="text-center">
+                    <div class="text-3xl font-bold mb-2" data-bind="stats.totalInvestors">500+</div>
+                    <div class="text-blue-200">Active Investors</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold mb-2" data-bind="stats.totalReturns">₦2.5M</div>
+                    <div class="text-blue-200">Returns Paid</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold mb-2" data-bind="stats.activeVillagers">24</div>
+                    <div class="text-blue-200">Active Villagers</div>
+                </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <button class="bg-kenya-green text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-opacity-90 transition-all">
+                    <i class="fas fa-hand-holding-usd mr-2"></i>Start Investing Now
+                </button>
+                <button class="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-white hover:text-kenya-blue transition-all">
+                    <i class="fas fa-phone mr-2"></i>Schedule a Call
+                </button>
+            </div>
+
+            <div class="mt-8 text-sm text-blue-200">
+                <p>* Returns are based on villager performance and are not guaranteed. Past performance does not indicate future results.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-10 h-10 bg-kenya-green rounded-lg flex items-center justify-center">
+                            <i class="fas fa-motorcycle text-white text-lg"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold">VillagerInvest</h3>
+                            <p class="text-xs text-gray-400">Empowering Rural Kenya</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-400 text-sm mb-4">Connecting rural talent with urban opportunities through sustainable investment.</p>
+                    <div class="flex space-x-3">
+                        <a href="#" class="text-gray-400 hover:text-kenya-green"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-kenya-green"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-kenya-green"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="font-semibold mb-4">Platform</h4>
+                    <div class="space-y-2 text-sm">
+                        <a href="#" class="text-gray-400 hover:text-white block">Investment Opportunities</a>
+                        <a href="#" class="text-gray-400 hover:text-white block">Villager Verification</a>
+                        <a href="#" class="text-gray-400 hover:text-white block">Returns Calculator</a>
+                        <a href="#" class="text-gray-400 hover:text-white block">Risk Assessment</a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="font-semibold mb-4">Support</h4>
+                    <div class="space-y-2 text-sm">
+                        <a href="#" class="text-gray-400 hover:text-white block">Help Center</a>
+                        <a href="#" class="text-gray-400 hover:text-white block">Contact Us</a>
+                        <a href="#" class="text-gray-400 hover:text-white block">Legal Documents</a>
+                        <a href="#" class="text-gray-400 hover:text-white block">Terms & Conditions</a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="font-semibold mb-4">Contact</h4>
+                    <div class="space-y-2 text-sm text-gray-400">
+                        <div class="flex items-center">
+                            <i class="fas fa-envelope mr-3"></i>
+                            <span>support@villagerinvest.co.ke</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-phone mr-3"></i>
+                            <span>+254 700 123 456</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-map-marker-alt mr-3"></i>
+                            <span>Nairobi, Kenya</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-800 pt-6 text-center text-sm text-gray-400">
+                <p>&copy; 2024 VillagerInvest. All rights reserved. | Licensed by Capital Markets Authority of Kenya</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+    (function() {
+        // Initialize portfolio chart
+        const ctx = document.getElementById('portfolioChart');
+        if (ctx) {
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+                    datasets: [{
+                        label: 'Portfolio Value (KSh)',
+                        data: [144000, 151200, 158400, 167250],
+                        borderColor: '#16A085',
+                        backgroundColor: 'rgba(22, 160, 133, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            ticks: {
+                                callback: function(value) {
+                                    return 'KSh ' + value.toLocaleString();
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // TODO: Implement real-time data updates, investment processing, user authentication
+        // TODO: Add form validation and API integration for investment transactions
+        // TODO: Implement websocket connections for live earning updates
+    })();
+    </script>
+</body>
+</html>

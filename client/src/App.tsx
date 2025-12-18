@@ -1,4 +1,4 @@
-import { Switch, Route } from "wouter";
+import { Switch, Route, Redirect } from "wouter";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
@@ -13,25 +13,39 @@ import VillagerRegister from "@/pages/villager-register";
 import VillagerDetails from "@/pages/villager-details";
 import Checkout from "@/pages/checkout";
 
+import AuthPage from "@/pages/auth-page";
+
 function Router() {
   const { isAuthenticated, isLoading } = useAuth();
 
+  if (isLoading) {
+    return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
+  }
+
   return (
     <Switch>
-      {/* Always accessible routes */}
-      <Route path="/villager-register" component={VillagerRegister} />
-      
-      {isLoading || !isAuthenticated ? (
-        <Route path="/" component={Landing} />
-      ) : (
-        <>
-          <Route path="/" component={Home} />
-          <Route path="/sponsor-portal" component={SponsorPortal} />
-          <Route path="/villager-portal" component={VillagerPortal} />
-          <Route path="/villager/:id" component={VillagerDetails} />
-          <Route path="/checkout" component={Checkout} />
-        </>
-      )}
+      {/* Public Routes */}
+      <Route path="/" component={Landing} />
+      <Route path="/auth" component={AuthPage} />
+      <Route path="/villager/:id" component={VillagerDetails} />
+
+      {/* Protected Routes */}
+      <Route path="/dashboard">
+        {!isAuthenticated ? <Redirect to="/auth" /> : <Home />}
+      </Route>
+      <Route path="/sponsor-portal">
+        {!isAuthenticated ? <Redirect to="/auth" /> : <SponsorPortal />}
+      </Route>
+      <Route path="/villager-portal">
+        {!isAuthenticated ? <Redirect to="/auth" /> : <VillagerPortal />}
+      </Route>
+      <Route path="/villager-register">
+        {!isAuthenticated ? <Redirect to="/auth" /> : <VillagerRegister />}
+      </Route>
+      <Route path="/checkout">
+        {!isAuthenticated ? <Redirect to="/auth" /> : <Checkout />}
+      </Route>
+
       <Route component={NotFound} />
     </Switch>
   );

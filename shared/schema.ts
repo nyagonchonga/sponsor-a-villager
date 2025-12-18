@@ -28,11 +28,15 @@ export const sessions = pgTable(
 // Users table (required for Replit Auth)
 export const users = pgTable("users", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  email: varchar("email").unique(),
-  firstName: varchar("first_name"),
-  lastName: varchar("last_name"),
+  email: varchar("email").unique().notNull(),
+  firstName: varchar("first_name").notNull(),
+  lastName: varchar("last_name").notNull(),
+  idNumber: varchar("id_number").unique().notNull(),
+  phoneNumber: varchar("phone_number").notNull(),
   profileImageUrl: varchar("profile_image_url"),
   role: varchar("role", { enum: ["sponsor", "villager", "admin"] }).notNull().default("sponsor"),
+  username: varchar("username").unique().notNull(),
+  password: varchar("password").notNull(),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
@@ -46,7 +50,7 @@ export const villagers = pgTable("villagers", {
   location: varchar("location").notNull(),
   story: text("story").notNull(),
   profileImageUrl: varchar("profile_image_url"),
-  targetAmount: decimal("target_amount", { precision: 10, scale: 2 }).notNull().default("48000.00"),
+  targetAmount: decimal("target_amount", { precision: 10, scale: 2 }).notNull().default("65000.00"),
   currentAmount: decimal("current_amount", { precision: 10, scale: 2 }).notNull().default("0.00"),
   status: varchar("status", { enum: ["available", "partially_funded", "fully_funded", "in_training", "active"] })
     .notNull().default("available"),
@@ -61,14 +65,14 @@ export const sponsorships = pgTable("sponsorships", {
   sponsorId: varchar("sponsor_id").references(() => users.id).notNull(),
   villagerId: varchar("villager_id").references(() => villagers.id).notNull(),
   amount: decimal("amount", { precision: 10, scale: 2 }).notNull(),
-  sponsorshipType: varchar("sponsorship_type", { 
-    enum: ["full", "partial", "group"] 
+  sponsorshipType: varchar("sponsorship_type", {
+    enum: ["full", "partial", "group"]
   }).notNull(),
-  componentType: varchar("component_type", { 
-    enum: ["training", "housing", "transport", "bike", "full"] 
+  componentType: varchar("component_type", {
+    enum: ["training", "housing", "transport", "bike", "full"]
   }),
-  paymentStatus: varchar("payment_status", { 
-    enum: ["pending", "completed", "failed"] 
+  paymentStatus: varchar("payment_status", {
+    enum: ["pending", "completed", "failed"]
   }).notNull().default("pending"),
   stripePaymentIntentId: varchar("stripe_payment_intent_id"),
   createdAt: timestamp("created_at").defaultNow(),
@@ -90,8 +94,8 @@ export const messages = pgTable("messages", {
 export const progressUpdates = pgTable("progress_updates", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   villagerId: varchar("villager_id").references(() => villagers.id).notNull(),
-  phase: varchar("phase", { 
-    enum: ["training", "housing", "bike_deployment", "active"] 
+  phase: varchar("phase", {
+    enum: ["training", "housing", "bike_deployment", "active"]
   }).notNull(),
   description: text("description").notNull(),
   imageUrl: varchar("image_url"),

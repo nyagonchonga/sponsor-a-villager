@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import { useLocation } from "wouter";
+import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import Navigation from "@/components/navigation";
@@ -12,19 +13,21 @@ export default function Home() {
   const { user, isAuthenticated, isLoading } = useAuth();
   const [, navigate] = useLocation();
 
+  const { data: villagerProfile, isLoading: isLoadingProfile, error: profileError } = useQuery({
+    queryKey: ["/api/villagers/profile"],
+    enabled: isAuthenticated && user?.role === "villager",
+    retry: false,
+  });
+
   useEffect(() => {
-    if (!isLoading && !isAuthenticated) {
-      toast({
-        title: "Unauthorized",
-        description: "You are logged out. Logging in again...",
-        variant: "destructive",
-      });
-      setTimeout(() => {
-        window.location.href = "/api/login";
-      }, 500);
-      return;
+    if (!isLoadingProfile && isAuthenticated && user?.role === "villager" && !villagerProfile && profileError) {
+      const errorResponse = profileError as any;
+      if (errorResponse?.message === "No villager profile found" ||
+        (errorResponse?.status === 404)) {
+        navigate("/villager-register");
+      }
     }
-  }, [isAuthenticated, isLoading, toast]);
+  }, [isLoadingProfile, isAuthenticated, user, villagerProfile, profileError, navigate]);
 
   if (isLoading) {
     return (
@@ -44,7 +47,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gray-50">
       <Navigation />
-      
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
@@ -59,8 +62,8 @@ export default function Home() {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
           {isSponsor && (
             <>
-              <Card className="hover:shadow-lg transition-shadow cursor-pointer" 
-                onClick={() => navigate('/sponsor-portal')} 
+              <Card className="hover:shadow-lg transition-shadow cursor-pointer"
+                onClick={() => navigate('/sponsor-portal')}
                 data-testid="card-sponsor-portal">
                 <CardContent className="p-6">
                   <div className="flex items-center mb-4">
@@ -96,8 +99,8 @@ export default function Home() {
 
           {isVillager && (
             <>
-              <Card className="hover:shadow-lg transition-shadow cursor-pointer" 
-                onClick={() => navigate('/villager-portal')} 
+              <Card className="hover:shadow-lg transition-shadow cursor-pointer"
+                onClick={() => navigate('/villager-portal')}
                 data-testid="card-villager-portal">
                 <CardContent className="p-6">
                   <div className="flex items-center mb-4">
@@ -155,14 +158,14 @@ export default function Home() {
             <div className="flex flex-wrap gap-4">
               {isSponsor && (
                 <>
-                  <Button 
+                  <Button
                     onClick={() => navigate('/#villagers')}
                     data-testid="button-browse-villagers"
                   >
                     <Heart className="mr-2 h-4 w-4" />
                     Browse Villagers
                   </Button>
-                  <Button 
+                  <Button
                     variant="outline"
                     onClick={() => navigate('/sponsor-portal')}
                     data-testid="button-view-sponsorships"
@@ -172,17 +175,17 @@ export default function Home() {
                   </Button>
                 </>
               )}
-              
+
               {isVillager && (
                 <>
-                  <Button 
+                  <Button
                     onClick={() => navigate('/villager-portal')}
                     data-testid="button-update-profile"
                   >
                     <Users className="mr-2 h-4 w-4" />
                     Update Profile
                   </Button>
-                  <Button 
+                  <Button
                     variant="outline"
                     data-testid="button-view-sponsors"
                   >
@@ -191,9 +194,9 @@ export default function Home() {
                   </Button>
                 </>
               )}
-              
-              <Button 
-                variant="outline" 
+
+              <Button
+                variant="outline"
                 onClick={() => window.location.href = "/api/logout"}
                 data-testid="button-logout"
               >

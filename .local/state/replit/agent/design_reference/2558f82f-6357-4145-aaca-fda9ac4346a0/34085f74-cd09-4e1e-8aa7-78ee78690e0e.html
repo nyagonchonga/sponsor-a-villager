@@ -1,0 +1,662 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sponsor a Villager Program - Empowering Rural Youth Through Clean Mobility</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'sans': ['Inter', 'sans-serif'],
+                        'heading': ['Poppins', 'sans-serif']
+                    },
+                    colors: {
+                        primary: '#2D5F3F',
+                        secondary: '#D73527',
+                        accent: '#F4A623',
+                        success: '#10B981',
+                        charcoal: '#2C3E50'
+                    }
+                }
+            }
+        };
+    </script>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- @COMPONENT: Header [navigation, logo, user authentication] -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <i class="fas fa-motorcycle text-primary text-2xl mr-3"></i>
+                        <span class="font-heading font-bold text-xl text-charcoal">Sponsor a Villager</span>
+                    </div>
+                </div>
+                
+                <nav class="hidden md:flex space-x-8">
+                    <a href="#programs" class="text-gray-600 hover:text-primary transition-colors">Programs</a>
+                    <a href="#how-it-works" class="text-gray-600 hover:text-primary transition-colors">How It Works</a>
+                    <a href="#impact" class="text-gray-600 hover:text-primary transition-colors">Impact</a>
+                    <a href="#pilot" class="text-gray-600 hover:text-primary transition-colors">Pilot Phase</a>
+                </nav>
+                
+                <div class="flex items-center space-x-4">
+                    <button class="text-gray-600 hover:text-primary transition-colors">
+                        <span data-bind="user.isLoggedIn ? 'Dashboard' : 'Login'">Login</span>
+                    </button>
+                    <button class="bg-primary hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium transition-colors">
+                        Get Started
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- @END_COMPONENT: Header -->
+
+    <!-- @COMPONENT: Hero [main banner, value proposition, primary CTAs] -->
+    <section class="relative bg-gradient-to-br from-primary to-green-800 text-white">
+        <!-- A vibrant scene of rural Kenyan village with young people and traditional homes -->
+        <div class="absolute inset-0 bg-black opacity-40"></div>
+        <div class="absolute inset-0" style="background-image: url('https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1920&h=1080'); background-size: cover; background-position: center;"></div>
+        
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+            <div class="max-w-3xl">
+                <h1 class="font-heading font-bold text-4xl md:text-6xl leading-tight mb-6">
+                    Empower Rural Youth Through
+                    <span class="text-accent">Clean Mobility</span>
+                </h1>
+                
+                <p class="text-xl md:text-2xl mb-8 text-gray-200">
+                    Break the cycle of poverty and idleness by providing Kenyan villagers with electric bikes, 
+                    skills training, and sustainable livelihood opportunities.
+                </p>
+                
+                <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-6 mb-8">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+                        <div>
+                            <div class="text-3xl font-bold text-accent">KSh 48,000</div>
+                            <div class="text-sm text-gray-300">to sponsor one villager</div>
+                        </div>
+                        <div>
+                            <div class="text-3xl font-bold text-accent">4</div>
+                            <div class="text-sm text-gray-300">villagers in pilot phase</div>
+                        </div>
+                        <div>
+                            <div class="text-3xl font-bold text-accent">2 months</div>
+                            <div class="text-sm text-gray-300">transitional support</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <button data-event="click:handleSponsorNow" class="bg-accent hover:bg-yellow-500 text-black px-8 py-4 rounded-xl font-semibold text-lg transition-colors flex items-center justify-center">
+                        <i class="fas fa-heart mr-2"></i>
+                        Sponsor Now
+                    </button>
+                    <button data-event="click:handleInvestNow" class="bg-transparent border-2 border-white hover:bg-white hover:text-primary text-white px-8 py-4 rounded-xl font-semibold text-lg transition-colors flex items-center justify-center">
+                        <i class="fas fa-chart-line mr-2"></i>
+                        Invest for Returns
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: Hero -->
+
+    <!-- @COMPONENT: ProgramOptions [sponsor vs invest comparison] -->
+    <section id="programs" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="font-heading font-bold text-3xl md:text-4xl text-charcoal mb-4">
+                    Two Ways to Make Impact
+                </h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    Choose between charitable sponsorship or investment with returns. Both paths create lasting change.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                <!-- Sponsorship Option -->
+                <div class="bg-gradient-to-br from-primary to-green-700 rounded-2xl p-8 text-white relative overflow-hidden">
+                    <div class="absolute top-4 right-4">
+                        <span class="bg-accent text-black px-3 py-1 rounded-full text-sm font-semibold">
+                            Most Popular
+                        </span>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <i class="fas fa-heart text-4xl text-accent mb-4"></i>
+                        <h3 class="font-heading font-bold text-2xl mb-2">Sponsor a Villager</h3>
+                        <p class="text-gray-200">Make a charitable contribution to empower someone's future</p>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <div class="text-4xl font-bold mb-2">KSh 48,000</div>
+                        <div class="text-gray-300">One-time charitable contribution</div>
+                    </div>
+                    
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-accent mr-3 mt-1"></i>
+                            <span>Bike training & NTSA licensing</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-accent mr-3 mt-1"></i>
+                            <span>Transportation to Nairobi</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-accent mr-3 mt-1"></i>
+                            <span>2 months shared housing</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-accent mr-3 mt-1"></i>
+                            <span>Electric bike deposit coverage</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-accent mr-3 mt-1"></i>
+                            <span>Progress updates & messaging</span>
+                        </li>
+                    </ul>
+                    
+                    <button data-event="click:handleSponsorOption" class="w-full bg-accent hover:bg-yellow-500 text-black py-4 rounded-xl font-semibold transition-colors">
+                        Sponsor a Villager
+                    </button>
+                    
+                    <div class="mt-6 text-center">
+                        <p class="text-sm text-gray-300">
+                            <i class="fas fa-users mr-1"></i>
+                            Group sponsorship available
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Investment Option -->
+                <div class="bg-white border-2 border-gray-200 rounded-2xl p-8 relative">
+                    <div class="mb-6">
+                        <i class="fas fa-chart-line text-4xl text-secondary mb-4"></i>
+                        <h3 class="font-heading font-bold text-2xl mb-2 text-charcoal">Invest in a Villager</h3>
+                        <p class="text-gray-600">Fund experienced villagers and receive daily returns</p>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <div class="text-4xl font-bold mb-2 text-charcoal">KSh 1,000</div>
+                        <div class="text-gray-500">daily returns for 1 year</div>
+                    </div>
+                    
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-success mr-3 mt-1"></i>
+                            <span>For experienced villagers only</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-success mr-3 mt-1"></i>
+                            <span>KSh 365,000 total returns (1 year)</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-success mr-3 mt-1"></i>
+                            <span>Contract-based agreement</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-success mr-3 mt-1"></i>
+                            <span>Daily earnings tracking</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-success mr-3 mt-1"></i>
+                            <span>Direct villager communication</span>
+                        </li>
+                    </ul>
+                    
+                    <button data-event="click:handleInvestOption" class="w-full bg-secondary hover:bg-red-600 text-white py-4 rounded-xl font-semibold transition-colors">
+                        Invest for Returns
+                    </button>
+                    
+                    <div class="mt-6 text-center">
+                        <p class="text-sm text-gray-500">
+                            <i class="fas fa-shield-alt mr-1"></i>
+                            Secure investment tracking
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: ProgramOptions -->
+
+    <!-- @COMPONENT: HowItWorks [step-by-step process] -->
+    <section id="how-it-works" class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="font-heading font-bold text-3xl md:text-4xl text-charcoal mb-4">
+                    How It Works
+                </h2>
+                <p class="text-xl text-gray-600">
+                    Simple steps to create lasting impact in rural communities
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Step 1 -->
+                <div class="bg-white rounded-2xl p-8 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center mb-6">
+                        <span class="text-white font-bold text-2xl">1</span>
+                    </div>
+                    <h3 class="font-heading font-semibold text-xl mb-4 text-charcoal">
+                        Select & Train
+                    </h3>
+                    <p class="text-gray-600 mb-4">
+                        We carefully select 4 committed villagers and provide comprehensive NTSA bike training and licensing.
+                    </p>
+                    <div class="flex items-center text-primary font-medium">
+                        <span>KSh 8,000 per person</span>
+                    </div>
+                </div>
+                
+                <!-- Step 2 -->
+                <div class="bg-white rounded-2xl p-8 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="w-16 h-16 bg-accent rounded-2xl flex items-center justify-center mb-6">
+                        <span class="text-black font-bold text-2xl">2</span>
+                    </div>
+                    <h3 class="font-heading font-semibold text-xl mb-4 text-charcoal">
+                        Relocate & House
+                    </h3>
+                    <p class="text-gray-600 mb-4">
+                        Transport villagers to Nairobi and provide 2 months of shared housing for smooth transition.
+                    </p>
+                    <div class="flex items-center text-primary font-medium">
+                        <span>KSh 10,000 per person</span>
+                    </div>
+                </div>
+                
+                <!-- Step 3 -->
+                <div class="bg-white rounded-2xl p-8 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="w-16 h-16 bg-secondary rounded-2xl flex items-center justify-center mb-6">
+                        <span class="text-white font-bold text-2xl">3</span>
+                    </div>
+                    <h3 class="font-heading font-semibold text-xl mb-4 text-charcoal">
+                        Deploy & Support
+                    </h3>
+                    <p class="text-gray-600 mb-4">
+                        Secure Raum Electric Bikes on deposit and partner with SafeBoda for comprehensive orientation.
+                    </p>
+                    <div class="flex items-center text-primary font-medium">
+                        <span>KSh 30,000 per person</span>
+                    </div>
+                </div>
+                
+                <!-- Step 4 -->
+                <div class="bg-white rounded-2xl p-8 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="w-16 h-16 bg-success rounded-2xl flex items-center justify-center mb-6">
+                        <i class="fas fa-chart-line text-white text-xl"></i>
+                    </div>
+                    <h3 class="font-heading font-semibold text-xl mb-4 text-charcoal">
+                        Monitor Progress
+                    </h3>
+                    <p class="text-gray-600 mb-4">
+                        Track earnings, provide ongoing support, and gather insights to scale the program effectively.
+                    </p>
+                    <div class="flex items-center text-success font-medium">
+                        <span>Ongoing monitoring</span>
+                    </div>
+                </div>
+                
+                <!-- Step 5 -->
+                <div class="bg-white rounded-2xl p-8 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="w-16 h-16 bg-purple-600 rounded-2xl flex items-center justify-center mb-6">
+                        <i class="fas fa-comments text-white text-xl"></i>
+                    </div>
+                    <h3 class="font-heading font-semibold text-xl mb-4 text-charcoal">
+                        Stay Connected
+                    </h3>
+                    <p class="text-gray-600 mb-4">
+                        Direct messaging between supporters and villagers, with progress updates and milestone celebrations.
+                    </p>
+                    <div class="flex items-center text-purple-600 font-medium">
+                        <span>Real-time updates</span>
+                    </div>
+                </div>
+                
+                <!-- Step 6 -->
+                <div class="bg-white rounded-2xl p-8 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="w-16 h-16 bg-indigo-600 rounded-2xl flex items-center justify-center mb-6">
+                        <i class="fas fa-expand-arrows-alt text-white text-xl"></i>
+                    </div>
+                    <h3 class="font-heading font-semibold text-xl mb-4 text-charcoal">
+                        Scale Impact
+                    </h3>
+                    <p class="text-gray-600 mb-4">
+                        Use pilot learnings to expand the program, creating a sustainable model for rural empowerment.
+                    </p>
+                    <div class="flex items-center text-indigo-600 font-medium">
+                        <span>Scalable model</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: HowItWorks -->
+
+    <!-- @COMPONENT: PilotPhase [pilot-specific information and progress] -->
+    <section id="pilot" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <div class="inline-block bg-accent text-black px-4 py-2 rounded-full font-semibold mb-4">
+                    Pilot Phase Active
+                </div>
+                <h2 class="font-heading font-bold text-3xl md:text-4xl text-charcoal mb-4">
+                    First 4 Villagers Program
+                </h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    We're starting with a focused pilot of 4 villagers to perfect our approach before scaling.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <!-- A diverse group of young African adults collaborating around a table with laptops and documents -->
+                    <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=600" alt="Young people collaborating on community development" class="rounded-2xl shadow-lg w-full" />
+                </div>
+                
+                <div>
+                    <div class="bg-gray-50 rounded-2xl p-8 mb-8">
+                        <h3 class="font-heading font-bold text-2xl mb-6 text-charcoal">Pilot Phase Budget</h3>
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-600">Bike Training & Licensing</span>
+                                <span class="font-semibold">KSh 32,000</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-600">Transport to Nairobi</span>
+                                <span class="font-semibold">KSh 8,000</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-600">Shared Housing (2 months)</span>
+                                <span class="font-semibold">KSh 32,000</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-600">Bike Deposits (4 bikes)</span>
+                                <span class="font-semibold">KSh 120,000</span>
+                            </div>
+                            <div class="border-t pt-4">
+                                <div class="flex justify-between items-center text-lg font-bold">
+                                    <span>Total Pilot Budget</span>
+                                    <span class="text-primary">KSh 192,000</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- @STATE: pilotProgress:number = 45 -->
+                    <div class="mb-8">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="font-semibold text-charcoal">Funding Progress</span>
+                            <span class="text-primary font-bold" data-bind="pilotProgress">45%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-3">
+                            <div class="bg-primary h-3 rounded-full transition-all duration-300" style="width: 45%"></div>
+                        </div>
+                        <p class="text-sm text-gray-500 mt-2">KSh 86,400 of KSh 192,000 raised</p>
+                    </div>
+                    
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <button data-event="click:handleJoinPilot" class="bg-primary hover:bg-green-700 text-white px-6 py-3 rounded-xl font-semibold flex-1 transition-colors">
+                            Join the Pilot
+                        </button>
+                        <button data-event="click:handleGroupSponsorship" class="bg-gray-200 hover:bg-gray-300 text-charcoal px-6 py-3 rounded-xl font-semibold flex-1 transition-colors">
+                            Group Sponsorship
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: PilotPhase -->
+
+    <!-- @COMPONENT: Impact [success stories and metrics] -->
+    <section id="impact" class="py-20 bg-gradient-to-br from-primary to-green-800 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="font-heading font-bold text-3xl md:text-4xl mb-4">
+                    Expected Impact
+                </h2>
+                <p class="text-xl text-gray-200 max-w-3xl mx-auto">
+                    Every contribution creates ripple effects that transform communities
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-accent mb-2">4</div>
+                    <div class="text-gray-300">Rural Youth Empowered</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-accent mb-2">100%</div>
+                    <div class="text-gray-300">Clean Energy Transport</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-accent mb-2">60</div>
+                    <div class="text-gray-300">Days of Support</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-accent mb-2">∞</div>
+                    <div class="text-gray-300">Lasting Livelihood</div>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-6">
+                    <i class="fas fa-user-graduate text-3xl text-accent mb-4"></i>
+                    <h3 class="font-heading font-semibold text-xl mb-3">Skills Development</h3>
+                    <p class="text-gray-300">
+                        Professional bike operation, customer service, and digital platform navigation skills.
+                    </p>
+                </div>
+                
+                <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-6">
+                    <i class="fas fa-leaf text-3xl text-accent mb-4"></i>
+                    <h3 class="font-heading font-semibold text-xl mb-3">Environmental Impact</h3>
+                    <p class="text-gray-300">
+                        Zero-emission transportation reducing carbon footprint and promoting clean energy adoption.
+                    </p>
+                </div>
+                
+                <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-6">
+                    <i class="fas fa-handshake text-3xl text-accent mb-4"></i>
+                    <h3 class="font-heading font-semibold text-xl mb-3">Community Building</h3>
+                    <p class="text-gray-300">
+                        Stronger rural-urban connections and networks that benefit entire communities.
+                    </p>
+                </div>
+                
+                <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-6">
+                    <i class="fas fa-chart-line text-3xl text-accent mb-4"></i>
+                    <h3 class="font-heading font-semibold text-xl mb-3">Economic Growth</h3>
+                    <p class="text-gray-300">
+                        Sustainable income generation that breaks cycles of poverty and dependency.
+                    </p>
+                </div>
+                
+                <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-6">
+                    <i class="fas fa-shield-alt text-3xl text-accent mb-4"></i>
+                    <h3 class="font-heading font-semibold text-xl mb-3">Social Impact</h3>
+                    <p class="text-gray-300">
+                        Reduced drug abuse and idleness through meaningful employment opportunities.
+                    </p>
+                </div>
+                
+                <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-6">
+                    <i class="fas fa-rocket text-3xl text-accent mb-4"></i>
+                    <h3 class="font-heading font-semibent text-xl mb-3">Scalable Model</h3>
+                    <p class="text-gray-300">
+                        Proven framework for replicating success across other rural communities.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: Impact -->
+
+    <!-- @COMPONENT: CallToAction [final CTA section] -->
+    <section class="py-20 bg-white">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="font-heading font-bold text-3xl md:text-4xl text-charcoal mb-6">
+                Ready to Change Lives?
+            </h2>
+            <p class="text-xl text-gray-600 mb-10">
+                Join us in empowering rural youth through sustainable mobility solutions. 
+                Every contribution creates lasting impact.
+            </p>
+            
+            <!-- A inspiring image of African motorcyclists wearing helmets on electric bikes in an urban setting -->
+            <div class="mb-10">
+                <img src="https://pixabay.com/get/gee7932e478550ff2e2c909f30dea8cc736000c072a1b777155a06b0820a173a82048818eaf9a4ac7119118a44ad9b5ed121f176aeb22c682d47cea4040ec795f_1280.jpg" alt="Electric motorcycle riders in urban African setting" class="rounded-2xl shadow-lg w-full h-64 object-cover" />
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+                <div class="bg-primary text-white rounded-2xl p-8">
+                    <h3 class="font-heading font-bold text-2xl mb-4">Individual Sponsor</h3>
+                    <p class="text-gray-200 mb-6">Fund one villager completely</p>
+                    <div class="text-3xl font-bold text-accent mb-6">KSh 48,000</div>
+                    <button data-event="click:handleIndividualSponsor" class="w-full bg-accent hover:bg-yellow-500 text-black py-3 rounded-xl font-semibold transition-colors">
+                        Sponsor Now
+                    </button>
+                </div>
+                
+                <div class="bg-gray-50 rounded-2xl p-8">
+                    <h3 class="font-heading font-bold text-2xl mb-4 text-charcoal">Group Sponsor</h3>
+                    <p class="text-gray-600 mb-6">Join others to sponsor together</p>
+                    <div class="text-3xl font-bold text-primary mb-6">From KSh 5,000</div>
+                    <button data-event="click:handleGroupSponsor" class="w-full bg-primary hover:bg-green-700 text-white py-3 rounded-xl font-semibold transition-colors">
+                        Join a Group
+                    </button>
+                </div>
+            </div>
+            
+            <p class="text-sm text-gray-500 mb-6">
+                Secure payments • Progress tracking • Direct communication • Tax receipts available
+            </p>
+            
+            <div class="flex items-center justify-center space-x-6 text-gray-400">
+                <i class="fas fa-lock text-xl"></i>
+                <span>Secure & Trusted</span>
+                <i class="fas fa-mobile-alt text-xl"></i>
+                <span>Mobile Optimized</span>
+                <i class="fas fa-comments text-xl"></i>
+                <span>Direct Updates</span>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: CallToAction -->
+
+    <!-- @COMPONENT: Footer [contact info, links, social] -->
+    <footer class="bg-charcoal text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+                <div class="col-span-1 md:col-span-2">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-motorcycle text-primary text-2xl mr-3"></i>
+                        <span class="font-heading font-bold text-xl">Sponsor a Villager</span>
+                    </div>
+                    <p class="text-gray-400 mb-6 max-w-md">
+                        Empowering rural youth through clean mobility solutions and sustainable livelihood opportunities.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-primary transition-colors">
+                            <i class="fab fa-facebook-f text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-primary transition-colors">
+                            <i class="fab fa-twitter text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-primary transition-colors">
+                            <i class="fab fa-instagram text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-primary transition-colors">
+                            <i class="fab fa-linkedin-in text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="font-heading font-semibold mb-4">Programs</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Sponsor a Villager</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Invest for Returns</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Group Sponsorship</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Pilot Phase</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-heading font-semibold mb-4">Support</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">How It Works</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">FAQ</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Contact Us</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Progress Updates</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 pt-8">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <p class="text-gray-400 text-sm">
+                        © 2024 Sponsor a Villager Program. All rights reserved.
+                    </p>
+                    <div class="flex space-x-6 mt-4 md:mt-0">
+                        <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">Privacy Policy</a>
+                        <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">Terms of Service</a>
+                        <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">Impact Reports</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- @END_COMPONENT: Footer -->
+
+    <script>
+        // Basic interactive functionality
+        (function() {
+            // TODO: Implement business logic, API calls, or state management for actual functionality
+            
+            // Smooth scrolling for navigation links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+
+            // Simple progress bar animation
+            const progressBar = document.querySelector('.bg-primary.h-3');
+            if (progressBar) {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            progressBar.style.width = '45%';
+                        }
+                    });
+                });
+                observer.observe(progressBar);
+            }
+
+            // Button click handlers (placeholder functionality)
+            document.addEventListener('click', function(e) {
+                if (e.target.matches('[data-event*="click:"]')) {
+                    const action = e.target.getAttribute('data-event').split(':')[1];
+                    console.log(`Action triggered: ${action}`);
+                    // TODO: Implement actual functionality for each action
+                }
+            });
+        })();
+    </script>
+</body>
+</html>

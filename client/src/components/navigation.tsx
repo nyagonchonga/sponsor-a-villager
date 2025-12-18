@@ -3,12 +3,12 @@ import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { 
-  DropdownMenu, 
-  DropdownMenuContent, 
-  DropdownMenuItem, 
-  DropdownMenuSeparator, 
-  DropdownMenuTrigger 
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
 import { useLocation } from "wouter";
 import { Menu, User, LogOut, Settings, Heart } from "lucide-react";
@@ -55,8 +55,8 @@ export default function Navigation() {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex items-center">
-            <button 
-              onClick={() => navigate('/')} 
+            <button
+              onClick={() => navigate('/')}
               className="flex-shrink-0"
               data-testid="logo-button"
             >
@@ -98,7 +98,7 @@ export default function Navigation() {
                     Sponsor Portal
                   </Button>
                 )}
-                
+
                 {user.role === 'villager' && (
                   <Button
                     variant="outline"
@@ -109,7 +109,7 @@ export default function Navigation() {
                     Villager Portal
                   </Button>
                 )}
-                
+
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="ghost" className="relative h-10 w-10 rounded-full" data-testid="user-menu-trigger">
@@ -132,7 +132,7 @@ export default function Navigation() {
                       </div>
                     </div>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem 
+                    <DropdownMenuItem
                       onClick={() => navigate('/')}
                       data-testid="menu-item-dashboard"
                     >
@@ -140,7 +140,7 @@ export default function Navigation() {
                       Dashboard
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem 
+                    <DropdownMenuItem
                       onClick={() => window.location.href = "/api/logout"}
                       data-testid="menu-item-logout"
                     >
@@ -154,7 +154,7 @@ export default function Navigation() {
               <div className="flex items-center space-x-3">
                 <Button
                   variant="outline"
-                  onClick={() => window.location.href = "/api/login"}
+                  onClick={() => navigate('/auth')}
                   data-testid="button-login"
                 >
                   <User className="mr-2 h-4 w-4" />
@@ -192,7 +192,7 @@ export default function Navigation() {
                       {item.label}
                     </button>
                   ))}
-                  
+
                   <div className="border-t pt-4">
                     {isAuthenticated && user ? (
                       <div className="space-y-3">
@@ -206,7 +206,7 @@ export default function Navigation() {
                             <p className="text-xs text-gray-500 capitalize" data-testid="mobile-user-role">{user.role}</p>
                           </div>
                         </div>
-                        
+
                         {user.role === 'sponsor' && (
                           <Button
                             variant="outline"
@@ -221,7 +221,7 @@ export default function Navigation() {
                             Sponsor Portal
                           </Button>
                         )}
-                        
+
                         {user.role === 'villager' && (
                           <Button
                             variant="outline"
@@ -236,7 +236,7 @@ export default function Navigation() {
                             Villager Portal
                           </Button>
                         )}
-                        
+
                         <Button
                           variant="outline"
                           className="w-full justify-start"
@@ -252,7 +252,7 @@ export default function Navigation() {
                         <Button
                           variant="outline"
                           className="w-full"
-                          onClick={() => window.location.href = "/api/login"}
+                          onClick={() => navigate('/auth')}
                           data-testid="mobile-button-login"
                         >
                           <User className="mr-2 h-4 w-4" />

@@ -8,9 +8,17 @@ import memoize from "memoizee";
 import createMemoryStore from "memorystore";
 import { storage } from "./storage";
 
+// Mock env vars for local dev
 if (!process.env.REPLIT_DOMAINS) {
-  throw new Error("Environment variable REPLIT_DOMAINS not provided");
+  process.env.REPLIT_DOMAINS = "localhost:5000";
 }
+if (!process.env.REPL_ID) {
+  process.env.REPL_ID = "local-dev-id";
+}
+if (!process.env.SESSION_SECRET) {
+  process.env.SESSION_SECRET = "dev-secret-key";
+}
+
 
 const getOidcConfig = memoize(
   async () => {
