@@ -74,6 +74,7 @@ export interface IStorage {
   createOtp(otp: InsertOtp): Promise<Otp>;
   getOtp(identifier: string, code: string): Promise<Otp | undefined>;
   verifyOtp(id: string): Promise<void>;
+  getVerifiedOtp(identifier: string): Promise<Otp | undefined>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -140,6 +141,21 @@ export class DatabaseStorage implements IStorage {
     await db.update(otps)
       .set({ verified: true })
       .where(eq(otps.id, id));
+  }
+
+  async getVerifiedOtp(identifier: string): Promise<Otp | undefined> {
+    const [otp] = await db.select()
+      .from(otps)
+      .where(
+        and(
+          eq(otps.identifier, identifier),
+          eq(otps.verified, true),
+          sql`${otps.expiresAt} > NOW()` // Strict expiry check
+        )
+      )
+      .orderBy(desc(otps.createdAt)) // Get the most recent one
+      .limit(1);
+    return otp;
   }
 
   // Villager operations

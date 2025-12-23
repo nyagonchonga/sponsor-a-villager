@@ -67,6 +67,12 @@ export function setupAuth(app: Express) {
                 return res.status(400).send("Username already exists");
             }
 
+            // Verify that the email has been verified via OTP
+            const verifiedOtp = await storage.getVerifiedOtp(req.body.email);
+            if (!verifiedOtp) {
+                return res.status(400).json({ message: "Email not verified. Please verify your email first." });
+            }
+
             const hashedPassword = await hashPassword(req.body.password);
             const user = await storage.createUser({
                 ...req.body,
