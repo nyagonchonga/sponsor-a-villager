@@ -5,7 +5,7 @@ import { eq, desc } from "drizzle-orm";
 
 async function verifyLive() {
     // const baseUrl = "http://localhost:5000";
-    const baseUrl = "https://sponsor-a-villager-gl6z.vercel.app";
+    const baseUrl = "https://sponsor-a-villager.vercel.app";
     const testEmail = `live_test_${Date.now()}@example.com`;
 
     console.log(`Target: ${baseUrl}`);
