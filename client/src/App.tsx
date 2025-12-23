@@ -12,6 +12,7 @@ import VillagerPortal from "@/pages/villager-portal";
 import VillagerRegister from "@/pages/villager-register";
 import VillagerDetails from "@/pages/villager-details";
 import Checkout from "@/pages/checkout";
+import ImpactPage from "@/pages/impact-page";
 
 import AuthPage from "@/pages/auth-page";
 
@@ -27,6 +28,7 @@ function Router() {
       {/* Public Routes */}
       <Route path="/" component={Landing} />
       <Route path="/auth" component={AuthPage} />
+      <Route path="/impact" component={ImpactPage} />
       <Route path="/villager/:id" component={VillagerDetails} />
 
       {/* Protected Routes */}

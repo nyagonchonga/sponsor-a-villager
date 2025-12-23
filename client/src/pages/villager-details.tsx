@@ -6,24 +6,26 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import Navigation from "@/components/navigation";
+import { format } from "date-fns";
+import { Villager, Sponsorship, ProgressUpdate } from "@shared/schema";
 import ProgressTracker from "@/components/progress-tracker";
 import Messaging from "@/components/messaging";
-import { ArrowLeft, Heart, MessageCircle, Users, TrendingUp } from "lucide-react";
+import { ArrowLeft, Heart, MessageCircle, Users, TrendingUp, Target } from "lucide-react";
 
 export default function VillagerDetails() {
   const { id } = useParams();
   const [, navigate] = useLocation();
 
-  const { data: villager, isLoading } = useQuery({
+  const { data: villager, isLoading } = useQuery<Villager>({
     queryKey: ["/api/villagers", id],
   });
 
-  const { data: sponsorships = [] } = useQuery({
+  const { data: sponsorships = [] } = useQuery<Sponsorship[]>({
     queryKey: ["/api/sponsorships", id],
     enabled: !!id,
   });
 
-  const { data: progressUpdates = [] } = useQuery({
+  const { data: progressUpdates = [] } = useQuery<ProgressUpdate[]>({
     queryKey: ["/api/progress", id],
     enabled: !!id,
   });
@@ -74,7 +76,7 @@ export default function VillagerDetails() {
       in_training: { variant: "default" as const, text: "In Training" },
       active: { variant: "default" as const, text: "Active" },
     };
-    
+
     return statusMap[status as keyof typeof statusMap] || { variant: "secondary" as const, text: status };
   };
 
@@ -84,12 +86,12 @@ export default function VillagerDetails() {
   return (
     <div className="min-h-screen bg-gray-50">
       <Navigation />
-      
+
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Back Button */}
-        <Button 
-          variant="ghost" 
-          onClick={() => navigate("/")} 
+        <Button
+          variant="ghost"
+          onClick={() => navigate("/")}
           className="mb-6"
           data-testid="button-back"
         >
@@ -117,11 +119,16 @@ export default function VillagerDetails() {
                   <div className="flex-grow">
                     <div className="flex items-start justify-between mb-4">
                       <div>
-                        <h1 className="text-3xl font-bold text-gray-900 mb-2" data-testid="text-villager-name">
-                          {villager.name}
-                        </h1>
+                        <div className="flex items-center gap-3 mb-2">
+                          <h1 className="text-3xl font-bold text-gray-900" data-testid="text-villager-name">
+                            {villager.name}
+                          </h1>
+                          <Badge className="bg-purple-100 text-purple-700 hover:bg-purple-100 border-purple-200">
+                            Slot #{villager.id}/2000
+                          </Badge>
+                        </div>
                         <p className="text-lg text-gray-600 mb-4" data-testid="text-villager-info">
-                          {villager.age} years old • {villager.location}
+                          {villager.age} years old • {villager.ward}, {villager.constituency}
                         </p>
                       </div>
                       <Badge variant={statusBadge.variant} className="text-sm" data-testid="badge-status">
@@ -147,7 +154,7 @@ export default function VillagerDetails() {
 
                     {/* Action Buttons */}
                     <div className="flex flex-wrap gap-3">
-                      <Button 
+                      <Button
                         className="bg-kenya-red hover:bg-red-700"
                         onClick={() => navigate(`/checkout?villager=${villager.id}&type=full`)}
                         disabled={villager.status === 'fully_funded'}
@@ -156,8 +163,8 @@ export default function VillagerDetails() {
                         <Heart className="mr-2 h-4 w-4" />
                         {villager.status === 'fully_funded' ? 'Fully Sponsored' : 'Sponsor Now'}
                       </Button>
-                      
-                      <Button 
+
+                      <Button
                         variant="outline"
                         onClick={() => navigate(`/checkout?villager=${villager.id}&type=partial`)}
                         disabled={villager.status === 'fully_funded'}
@@ -165,8 +172,8 @@ export default function VillagerDetails() {
                       >
                         Partial Support
                       </Button>
-                      
-                      <Button 
+
+                      <Button
                         variant="outline"
                         data-testid="button-message"
                       >
@@ -185,7 +192,7 @@ export default function VillagerDetails() {
                 <CardTitle>Progress Updates</CardTitle>
               </CardHeader>
               <CardContent>
-                <ProgressTracker updates={progressUpdates} />
+                <ProgressTracker updates={progressUpdates as any} />
               </CardContent>
             </Card>
           </div>
@@ -287,7 +294,7 @@ export default function VillagerDetails() {
                           <div className="font-medium text-sm">Anonymous Sponsor</div>
                           <div className="text-xs text-gray-500 capitalize">
                             {sponsorship.sponsorshipType}
-                            {sponsorship.componentType && sponsorship.componentType !== 'full' && 
+                            {sponsorship.componentType && sponsorship.componentType !== 'full' &&
                               ` (${sponsorship.componentType})`}
                           </div>
                         </div>
@@ -296,7 +303,7 @@ export default function VillagerDetails() {
                         </div>
                       </div>
                     ))}
-                    
+
                     {sponsorships.length > 3 && (
                       <div className="text-center text-sm text-gray-500 pt-2">
                         +{sponsorships.length - 3} more sponsors

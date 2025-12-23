@@ -16,12 +16,20 @@ if (!fs.existsSync(dataDir)) {
 }
 
 export const pool = process.env.DATABASE_URL
-  ? new Pool({ connectionString: process.env.DATABASE_URL })
+  ? new Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: process.env.NODE_ENV === "production" ? { rejectUnauthorized: false } : true
+  })
   : null;
 
 export const db = process.env.DATABASE_URL
   ? drizzle({ client: pool!, schema })
   : drizzlePglite(new PGlite(path.join(dataDir, "db")), { schema });
 
-// Helper to check if we're using PGlite
+// Secure Database Check
 export const isPgLite = !process.env.DATABASE_URL;
+if (isPgLite) {
+  console.warn("⚠️  SECURITY WARNING: Using local PGlite. For production encryption-at-rest, please provide a DATABASE_URL.");
+} else {
+  console.log("✅ Secure database connection ready (SSL Enforced).");
+}

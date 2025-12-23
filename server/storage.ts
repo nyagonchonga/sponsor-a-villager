@@ -4,6 +4,7 @@ import {
   sponsorships,
   messages,
   progressUpdates,
+  otps,
   type User,
   type UpsertUser,
   type Villager,
@@ -14,6 +15,8 @@ import {
   type InsertMessage,
   type ProgressUpdate,
   type InsertProgressUpdate,
+  type Otp,
+  type InsertOtp,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, and, or, sql } from "drizzle-orm";
@@ -29,6 +32,7 @@ export interface IStorage {
   // User operations
   getUser(id: string): Promise<User | undefined>;
   getUserByUsername(username: string): Promise<User | undefined>;
+  getUserByEmail(email: string): Promise<User | undefined>;
   createUser(user: UpsertUser): Promise<User>;
   upsertUser(user: UpsertUser): Promise<User>; // Keeping for compatibility
 
@@ -38,6 +42,8 @@ export interface IStorage {
   createVillager(villager: InsertVillager): Promise<Villager>;
   updateVillager(id: string, updates: Partial<Villager>): Promise<Villager>;
   getVillagerByUserId(userId: string): Promise<Villager | undefined>;
+  getVillagerCount(): Promise<number>;
+  getNextAvailableVillager(): Promise<Villager | undefined>;
 
   // Sponsorship operations
   createSponsorship(sponsorship: InsertSponsorship): Promise<Sponsorship>;
@@ -55,6 +61,19 @@ export interface IStorage {
   createProgressUpdate(update: InsertProgressUpdate): Promise<ProgressUpdate>;
   getProgressUpdates(villagerId: string): Promise<ProgressUpdate[]>;
   updateVillagerProgress(villagerId: string, progress: number): Promise<Villager>;
+  // Stats operations
+  getGlobalStats(): Promise<{
+    totalSponsors: number;
+    totalVillagers: number;
+    activeRiders: number;
+    totalRaised: string;
+    familiesImpacted: number;
+  }>;
+
+  // OTP methods
+  createOtp(otp: InsertOtp): Promise<Otp>;
+  getOtp(identifier: string, code: string): Promise<Otp | undefined>;
+  verifyOtp(id: string): Promise<void>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -77,6 +96,11 @@ export class DatabaseStorage implements IStorage {
     return user;
   }
 
+  async getUserByEmail(email: string): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.email, email));
+    return user;
+  }
+
   async getUserByUsername(username: string): Promise<User | undefined> {
     const [user] = await db.select().from(users).where(eq(users.username, username));
     return user;
@@ -91,9 +115,36 @@ export class DatabaseStorage implements IStorage {
     return this.createUser(userData);
   }
 
+  // OTP implementations
+  async createOtp(insertOtp: InsertOtp): Promise<Otp> {
+    const [otp] = await db.insert(otps).values(insertOtp).returning();
+    return otp;
+  }
+
+  async getOtp(identifier: string, code: string): Promise<Otp | undefined> {
+    const [otp] = await db.select()
+      .from(otps)
+      .where(
+        and(
+          eq(otps.identifier, identifier),
+          eq(otps.code, code),
+          eq(otps.verified, false),
+          sql`${otps.expiresAt} > NOW()`
+        )
+      )
+      .limit(1);
+    return otp;
+  }
+
+  async verifyOtp(id: string): Promise<void> {
+    await db.update(otps)
+      .set({ verified: true })
+      .where(eq(otps.id, id));
+  }
+
   // Villager operations
   async getVillagers(): Promise<Villager[]> {
-    return await db.select().from(villagers).orderBy(villagers.createdAt);
+    return await db.select().from(villagers).orderBy(desc(villagers.createdAt));
   }
 
   async getVillager(id: string): Promise<Villager | undefined> {
@@ -120,6 +171,22 @@ export class DatabaseStorage implements IStorage {
     return villager;
   }
 
+  async getVillagerCount(): Promise<number> {
+    const [result] = await db.select({ count: sql<number>`count(*)` }).from(villagers);
+    return Number(result.count);
+  }
+
+  async getNextAvailableVillager(): Promise<Villager | undefined> {
+    // Get villagers who need funding, ordered by creation time (priority slots)
+    const [villager] = await db
+      .select()
+      .from(villagers)
+      .where(sql`CAST(${villagers.currentAmount} AS DECIMAL) < CAST(${villagers.targetAmount} AS DECIMAL)`)
+      .orderBy(villagers.createdAt)
+      .limit(1);
+    return villager;
+  }
+
   // Sponsorship operations
   async createSponsorship(sponsorshipData: InsertSponsorship): Promise<Sponsorship> {
     const [sponsorship] = await db.insert(sponsorships).values(sponsorshipData).returning();
@@ -128,7 +195,7 @@ export class DatabaseStorage implements IStorage {
     await db
       .update(villagers)
       .set({
-        currentAmount: sql`${villagers.currentAmount} + ${sponsorshipData.amount}`,
+        currentAmount: sql`${villagers.currentAmount} + ${sponsorshipData.amount} `,
         updatedAt: new Date(),
       })
       .where(eq(villagers.id, sponsorshipData.villagerId));
@@ -165,8 +232,8 @@ export class DatabaseStorage implements IStorage {
   async getSponsorRankings(): Promise<{ name: string; totalAmount: string; rank: number }[]> {
     const results = await db
       .select({
-        name: sql<string>`${users.firstName} || ' ' || ${users.lastName}`,
-        totalAmount: sql<string>`sum(${sponsorships.amount})::text`,
+        name: sql<string>`${users.firstName} || ' ' || ${users.lastName} `,
+        totalAmount: sql<string>`sum(${sponsorships.amount}):: text`,
       })
       .from(sponsorships)
       .innerJoin(users, eq(sponsorships.sponsorId, users.id))
@@ -232,6 +299,42 @@ export class DatabaseStorage implements IStorage {
       .where(eq(villagers.id, villagerId))
       .returning();
     return villager;
+  }
+  async getGlobalStats(): Promise<{
+    totalSponsors: number;
+    totalVillagers: number;
+    activeRiders: number;
+    totalRaised: string;
+    familiesImpacted: number;
+  }> {
+    const [sponsorCountResult] = await db
+      .select({ count: sql<number>`count(distinct ${users.id})` })
+      .from(users)
+      .where(eq(users.role, 'sponsor'));
+
+    const [villagerCountResult] = await db
+      .select({ count: sql<number>`count(*)` })
+      .from(villagers);
+
+    const [activeRidersResult] = await db
+      .select({ count: sql<number>`count(*)` })
+      .from(villagers)
+      .where(sql`${villagers.trainingProgress} >= 75`);
+
+    const [totalRaisedResult] = await db
+      .select({ total: sql<string>`coalesce(sum(${sponsorships.amount}), 0):: text` })
+      .from(sponsorships)
+      .where(eq(sponsorships.paymentStatus, 'completed'));
+
+    const totalVillagers = Number(villagerCountResult.count);
+
+    return {
+      totalSponsors: Number(sponsorCountResult.count),
+      totalVillagers: totalVillagers,
+      activeRiders: Number(activeRidersResult.count),
+      totalRaised: totalRaisedResult.total,
+      familiesImpacted: totalVillagers * 4,
+    };
   }
 }
 

@@ -62,7 +62,7 @@ export function setupAuth(app: Express) {
 
     app.post("/api/register", async (req, res, next) => {
         try {
-            const existingUser = await storage.getUserByUsername(req.body.email); // Check by email (using helper which might need update, or direct query)
+            const existingUser = await storage.getUserByUsername(req.body.email);
             if (existingUser) {
                 return res.status(400).send("Username already exists");
             }
@@ -73,9 +73,35 @@ export function setupAuth(app: Express) {
                 password: hashedPassword,
             });
 
+            let assignedVillager = null;
+            let sponsorship = null;
+
+            // If sponsor selected a bundle, assign them to next available villager
+            if (user.role === "sponsor" && req.body.sponsorshipBundle && req.body.sponsorshipAmount) {
+                // Get the next villager that needs funding (ordered by creation date = slot priority)
+                const availableVillager = await storage.getNextAvailableVillager();
+
+                if (availableVillager) {
+                    // Create a pending sponsorship record
+                    sponsorship = await storage.createSponsorship({
+                        sponsorId: user.id,
+                        villagerId: availableVillager.id,
+                        amount: req.body.sponsorshipAmount.toString(),
+                        sponsorshipType: req.body.sponsorshipBundle === "full" ? "full" : "partial",
+                        componentType: req.body.sponsorshipBundle === "full" ? "full" : req.body.sponsorshipBundle,
+                    });
+
+                    assignedVillager = availableVillager;
+                }
+            }
+
             req.login(user, (err) => {
                 if (err) return next(err);
-                res.status(201).json(user);
+                res.status(201).json({
+                    user,
+                    assignedVillager,
+                    sponsorship
+                });
             });
         } catch (err) {
             next(err);

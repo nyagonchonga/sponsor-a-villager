@@ -49,7 +49,7 @@ export default function Messaging({ villagerId }: MessagingProps) {
   const [ws, setWs] = useState<WebSocket | null>(null);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
-  const { data: messages = [], isLoading } = useQuery({
+  const { data: messages = [], isLoading } = useQuery<Message[]>({
     queryKey: ["/api/messages", villagerId],
     enabled: !!villagerId,
   });
@@ -57,7 +57,7 @@ export default function Messaging({ villagerId }: MessagingProps) {
   const sendMessageMutation = useMutation({
     mutationFn: async (content: string) => {
       if (!user?.id) throw new Error("User not authenticated");
-      
+
       await apiRequest("POST", "/api/messages", {
         content,
         receiverId: "placeholder", // This would need to be determined based on conversation
@@ -92,9 +92,9 @@ export default function Messaging({ villagerId }: MessagingProps) {
   useEffect(() => {
     const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
     const wsUrl = `${protocol}//${window.location.host}/ws`;
-    
+
     const websocket = new WebSocket(wsUrl);
-    
+
     websocket.onopen = () => {
       console.log("WebSocket connected for messaging");
       setWs(websocket);
@@ -187,7 +187,7 @@ export default function Messaging({ villagerId }: MessagingProps) {
           )}
         </CardTitle>
       </CardHeader>
-      
+
       <CardContent className="p-0 flex flex-col h-full">
         {/* Messages Area */}
         <ScrollArea className="flex-1 px-6" ref={scrollAreaRef} data-testid="messages-scroll-area">
@@ -205,10 +205,10 @@ export default function Messaging({ villagerId }: MessagingProps) {
               {messages.map((msg: Message) => {
                 const isCurrentUser = msg.senderId === user.id;
                 const displayUser = isCurrentUser ? msg.receiver : msg.sender;
-                
+
                 return (
-                  <div 
-                    key={msg.id} 
+                  <div
+                    key={msg.id}
                     className={`flex gap-3 ${isCurrentUser ? 'flex-row-reverse' : ''}`}
                     data-testid={`message-${msg.id}`}
                   >
@@ -218,13 +218,12 @@ export default function Messaging({ villagerId }: MessagingProps) {
                         {getInitials(displayUser)}
                       </AvatarFallback>
                     </Avatar>
-                    
+
                     <div className={`flex-1 max-w-xs ${isCurrentUser ? 'text-right' : ''}`}>
-                      <div className={`rounded-lg px-3 py-2 ${
-                        isCurrentUser 
-                          ? 'bg-kenya-red text-white' 
+                      <div className={`rounded-lg px-3 py-2 ${isCurrentUser
+                          ? 'bg-kenya-red text-white'
                           : 'bg-gray-100 text-gray-900'
-                      }`}>
+                        }`}>
                         <p className="text-sm" data-testid={`message-content-${msg.id}`}>
                           {msg.content}
                         </p>
@@ -251,8 +250,8 @@ export default function Messaging({ villagerId }: MessagingProps) {
               className="flex-1"
               data-testid="input-message"
             />
-            <Button 
-              type="submit" 
+            <Button
+              type="submit"
               disabled={!message.trim() || sendMessageMutation.isPending}
               className="bg-kenya-red hover:bg-red-700"
               data-testid="button-send-message"

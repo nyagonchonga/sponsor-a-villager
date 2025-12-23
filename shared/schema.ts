@@ -31,23 +31,45 @@ export const users = pgTable("users", {
   email: varchar("email").unique().notNull(),
   firstName: varchar("first_name").notNull(),
   lastName: varchar("last_name").notNull(),
-  idNumber: varchar("id_number").unique().notNull(),
+  idNumber: varchar("id_number").unique(),
   phoneNumber: varchar("phone_number").notNull(),
   profileImageUrl: varchar("profile_image_url"),
   role: varchar("role", { enum: ["sponsor", "villager", "admin"] }).notNull().default("sponsor"),
   username: varchar("username").unique().notNull(),
   password: varchar("password").notNull(),
+  sponsorshipBundle: varchar("sponsorship_bundle", {
+    enum: ["full", "training", "housing", "transport", "bike", "custom", "loan_deposit"]
+  }),
+  sponsorshipAmount: decimal("sponsorship_amount", { precision: 10, scale: 2 }),
+  preferredPaymentMethod: varchar("preferred_payment_method", {
+    enum: ["bank_transfer", "mpesa", "stripe"]
+  }),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
 // Villagers table
+export const otps = pgTable("otps", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  identifier: varchar("identifier").notNull(), // Email or Phone
+  code: varchar("code").notNull(),
+  expiresAt: timestamp("expires_at").notNull(),
+  verified: boolean("verified").notNull().default(false),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const insertOtpSchema = createInsertSchema(otps);
+export type InsertOtp = z.infer<typeof insertOtpSchema>;
+export type Otp = typeof otps.$inferSelect;
+
 export const villagers = pgTable("villagers", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   userId: varchar("user_id").references(() => users.id),
   name: varchar("name").notNull(),
   age: integer("age").notNull(),
-  location: varchar("location").notNull(),
+  county: varchar("county").notNull().default("Kisii County"),
+  constituency: varchar("constituency").notNull(),
+  ward: varchar("ward").notNull(),
   story: text("story").notNull(),
   dream: text("dream"),
   profileImageUrl: varchar("profile_image_url"),
@@ -55,6 +77,12 @@ export const villagers = pgTable("villagers", {
   currentAmount: decimal("current_amount", { precision: 10, scale: 2 }).notNull().default("0.00"),
   status: varchar("status", { enum: ["available", "partially_funded", "fully_funded", "in_training", "active"] })
     .notNull().default("available"),
+  // New fields for license and program tracks
+  licenseType: varchar("license_type", {
+    enum: ["none", "A", "B", "C", "D", "E", "F", "G"]
+  }).notNull().default("none"),
+  licenseImageUrl: varchar("license_image_url"),
+  programType: varchar("program_type", { enum: ["standard", "bike_deposit", "nairobi_driver"] }).notNull().default("standard"),
   trainingProgress: integer("training_progress").notNull().default(0),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),

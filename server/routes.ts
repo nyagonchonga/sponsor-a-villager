@@ -4,6 +4,7 @@ import { WebSocketServer, WebSocket } from "ws";
 import Stripe from "stripe";
 import { z } from "zod";
 import { storage } from "./storage";
+import { db } from "./db";
 import { setupAuth } from "./auth";
 import multer from "multer";
 import path from "path";
@@ -71,6 +72,43 @@ export async function registerRoutes(app: Express): Promise<Server> {
     res.json(req.user);
   });
 
+  app.post('/api/auth/send-otp', async (req, res) => {
+    try {
+      const { identifier } = req.body;
+      if (!identifier) return res.status(400).json({ message: "Identifier (Email/Phone) is required" });
+
+      // Generate 6-digit code
+      const code = Math.floor(100000 + Math.random() * 900000).toString();
+      const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 mins
+
+      await storage.createOtp({ identifier, code, expiresAt });
+
+      const { sendOtp } = await import("./mailer");
+      await sendOtp(identifier, code);
+
+      res.json({ message: "OTP sent successfully" });
+    } catch (error) {
+      console.error("Error sending OTP:", error);
+      res.status(500).json({ message: "Failed to send OTP" });
+    }
+  });
+
+  app.post('/api/auth/verify-otp', async (req, res) => {
+    try {
+      const { identifier, code } = req.body;
+      if (!identifier || !code) return res.status(400).json({ message: "Identifier and code are required" });
+
+      const otp = await storage.getOtp(identifier, code);
+      if (!otp) return res.status(400).json({ message: "Invalid or expired OTP" });
+
+      await storage.verifyOtp(otp.id);
+      res.json({ success: true, otpId: otp.id });
+    } catch (error) {
+      console.error("Error verifying OTP:", error);
+      res.status(500).json({ message: "Failed to verify OTP" });
+    }
+  });
+
   // Sponsor routes
   app.get('/api/sponsors/rankings', async (_req, res) => {
     try {
@@ -90,6 +128,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error fetching villagers:", error);
       res.status(500).json({ message: "Failed to fetch villagers" });
+    }
+  });
+
+  // Global Stats route
+  app.get('/api/stats', async (_req, res) => {
+    try {
+      const stats = await storage.getGlobalStats();
+      res.json(stats);
+    } catch (error) {
+      console.error("Error fetching global stats:", error);
+      res.status(500).json({ message: "Failed to fetch global stats" });
     }
   });
 
@@ -132,9 +181,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
     try {
       const userId = (req.user as any).id;
+
+      // Enforce 2000 slots limit
+      const count = await storage.getVillagerCount();
+      if (count >= 2000) {
+        return res.status(403).json({ message: "No more sponsorship slots available for the 2024 cycle." });
+      }
+
+      // Determine target amount based on program type
+      let targetAmount = "65000.00"; // Default standard amount
+      if (req.body.programType === "bike_deposit") {
+        targetAmount = "20000.00";
+      }
+
       const validatedData = insertVillagerSchema.parse({
         ...req.body,
         userId,
+        targetAmount, // Override defaults
       });
 
       const villager = await storage.createVillager(validatedData);
@@ -367,6 +430,27 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error fetching progress updates:", error);
       res.status(500).json({ message: "Failed to fetch progress updates" });
+    }
+  });
+
+  // Debug route to clear database
+  app.get('/api/debug/clear-db', async (_req, res) => {
+    try {
+      console.log("CLEANING DATABASE VIA DEBUG ROUTE...");
+      const { villagers, users, sponsorships, messages, progressUpdates, sessions } = await import("@shared/schema");
+
+      // Use storage methods or direct db deletes
+      await db.delete(messages);
+      await db.delete(progressUpdates);
+      await db.delete(sponsorships);
+      await db.delete(villagers);
+      await db.delete(users);
+      await db.delete(sessions);
+
+      res.json({ message: "Database cleared successfully" });
+    } catch (error: any) {
+      console.error("Error clearing database:", error);
+      res.status(500).json({ message: "Failed to clear database", error: error.message });
     }
   });
 

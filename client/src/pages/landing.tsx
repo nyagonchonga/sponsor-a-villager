@@ -9,13 +9,23 @@ import Navigation from "@/components/navigation";
 import VillagerCard from "@/components/villager-card";
 import SponsorshipOptions from "@/components/sponsorship-options";
 import SponsorLeaderboard from "@/components/sponsor-leaderboard";
-import ImpactBar from "@/components/impact-bar";
-import { Heart, Play, GraduationCap, Home, Bike, ChartLine, Check, Quote, Download, Users, Trophy, Star } from "lucide-react";
+import { Heart, Play, GraduationCap, Home, Bike, ChartLine, Check, Quote, Download, Users, Trophy, Star, ArrowRight } from "lucide-react";
+import { Link } from "wouter";
 import type { Villager } from "@shared/schema";
 
 export default function Landing() {
   const { data: villagers = [] } = useQuery<Villager[]>({
     queryKey: ["/api/villagers"],
+  });
+
+  const { data: statsData } = useQuery<{
+    totalSponsors: number;
+    totalVillagers: number;
+    activeRiders: number;
+    totalRaised: string;
+    familiesImpacted: number;
+  }>({
+    queryKey: ["/api/stats"],
   });
 
   // Generate empty slots for up to 10 villagers
@@ -24,10 +34,7 @@ export default function Landing() {
 
   return (
     <div className="font-sans text-gray-900 bg-gray-50 overflow-x-hidden">
-      <div className="sticky top-0 z-50">
-        <ImpactBar />
-        <Navigation />
-      </div>
+      <Navigation />
 
       {/* Hero Section */}
       <section className="relative min-h-[90vh] flex items-center bg-gray-900 overflow-hidden">
@@ -120,8 +127,12 @@ export default function Landing() {
                     ))}
                   </div>
                   <div className="text-white">
-                    <p className="text-sm font-bold">500+ Sponsors</p>
-                    <p className="text-xs text-slate-400">Join our community</p>
+                    <p className="text-sm font-bold">
+                      {statsData?.totalSponsors ? `${statsData.totalSponsors}+ Sponsors` : "Join our community"}
+                    </p>
+                    <p className="text-xs opacity-60">
+                      {statsData?.totalSponsors ? "Join our community" : "Be the first to sponsor"}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -141,7 +152,7 @@ export default function Landing() {
                     <Trophy className="h-6 w-6 text-kenya-gold" />
                   </div>
                   <div>
-                    <p className="text-xl font-black">120</p>
+                    <p className="text-xl font-black">{statsData?.totalVillagers || 0}</p>
                     <p className="text-xs font-bold uppercase tracking-widest opacity-80">Villagers Active</p>
                   </div>
                 </div>
@@ -184,7 +195,7 @@ export default function Landing() {
                 <Bike className="h-8 w-8 text-white" />
               </div>
               <h3 className="text-xl font-semibold mb-2">Electric Bike</h3>
-              <p className="text-gray-600">Raum Electric Bike deposit and orientation (KSh 30,000)</p>
+              <p className="text-gray-600">Eco-friendly electric bike deposit and orientation (KSh 30,000)</p>
             </div>
 
             <div className="text-center group">
@@ -192,7 +203,7 @@ export default function Landing() {
                 <ChartLine className="h-8 w-8 text-gray-900" />
               </div>
               <h3 className="text-xl font-semibold mb-2">Sustainable Support</h3>
-              <p className="text-gray-600">Pocket money and SafeBoda partnership monitoring (KSh 10,000)</p>
+              <p className="text-gray-600">Pocket money and partner platform onboarding (KSh 10,000)</p>
             </div>
           </div>
 
@@ -338,81 +349,59 @@ export default function Landing() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold font-serif text-gray-900 mb-4">Our Impact</h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
               See the real difference your sponsorship makes in the lives of rural youth
               and their communities across Kenya.
             </p>
+            <Link href="/impact">
+              <Button size="lg" className="bg-gray-900 text-white hover:bg-kenya-red font-bold rounded-xl h-14 px-10 transition-all duration-300 transform hover:scale-105">
+                View Detailed Impact Report <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </Link>
           </div>
 
           {/* Statistics */}
           <div className="grid md:grid-cols-4 gap-8 mb-16">
             <div className="text-center">
-              <div className="text-4xl font-bold text-kenya-red mb-2" data-testid="stat-villagers-supported">24</div>
+              <div className="text-4xl font-bold text-kenya-red mb-2" data-testid="stat-villagers-supported">
+                {statsData?.totalVillagers || 0}
+              </div>
               <div className="text-gray-600">Villagers Supported</div>
             </div>
             <div className="text-center">
-              <div className="text-4xl font-bold text-kenya-green mb-2" data-testid="stat-active-riders">18</div>
+              <div className="text-4xl font-bold text-kenya-green mb-2" data-testid="stat-active-riders">
+                {statsData?.activeRiders || 0}
+              </div>
               <div className="text-gray-600">Active Riders</div>
             </div>
             <div className="text-center">
-              <div className="text-4xl font-bold text-trust-blue mb-2" data-testid="stat-families-impacted">96</div>
+              <div className="text-4xl font-bold text-trust-blue mb-2" data-testid="stat-families-impacted">
+                {statsData?.familiesImpacted || 0}
+              </div>
               <div className="text-gray-600">Families Impacted</div>
             </div>
             <div className="text-center">
-              <div className="text-4xl font-bold text-kenya-gold mb-2" data-testid="stat-monthly-earnings">KSh 45K</div>
+              <div className="text-4xl font-bold text-kenya-gold mb-2" data-testid="stat-monthly-earnings">
+                {statsData?.activeRiders ? "KSh 45K" : "KSh 0"}
+              </div>
               <div className="text-gray-600">Avg. Monthly Earnings</div>
             </div>
           </div>
 
-          {/* Success Stories */}
-          <div className="grid md:grid-cols-2 gap-8">
-            <Card className="p-8">
-              <CardContent className="p-0">
-                <div className="flex items-center mb-6">
-                  <img
-                    src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&h=100"
-                    alt="Peter Kimani success story"
-                    className="w-16 h-16 rounded-full object-cover mr-4"
-                  />
-                  <div>
-                    <h4 className="text-xl font-bold text-gray-900">Peter Kimani</h4>
-                    <p className="text-gray-600">Sponsored 8 months ago</p>
-                  </div>
-                </div>
-                <p className="text-gray-700 italic mb-4">
-                  "Thanks to my sponsor, I now earn KSh 60,000 monthly and have started my own delivery company.
-                  I've hired 3 other riders and am supporting my family's farm back home."
-                </p>
-                <div className="flex items-center text-kenya-green">
-                  <Quote className="mr-2 h-4 w-4" />
-                  <span className="text-sm font-medium">Success Story</span>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="p-8">
-              <CardContent className="p-0">
-                <div className="flex items-center mb-6">
-                  <img
-                    src="https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&h=100"
-                    alt="Catherine Wanjuru success story"
-                    className="w-16 h-16 rounded-full object-cover mr-4"
-                  />
-                  <div>
-                    <h4 className="text-xl font-bold text-gray-900">Catherine Wanjuru</h4>
-                    <p className="text-gray-600">Sponsored 6 months ago</p>
-                  </div>
-                </div>
-                <p className="text-gray-700 italic mb-4">
-                  "Being one of the few female riders has been challenging but rewarding. I'm now training other women
-                  and have paid for my sister's university fees. Dreams do come true!"
-                </p>
-                <div className="flex items-center text-kenya-green">
-                  <Quote className="mr-2 h-4 w-4" />
-                  <span className="text-sm font-medium">Success Story</span>
-                </div>
-              </CardContent>
-            </Card>
+          {/* Community Messages */}
+          <div className="text-center bg-gray-50 rounded-3xl p-12 border-2 border-dashed border-gray-200">
+            <Quote className="h-12 w-12 text-kenya-red/20 mx-auto mb-6" />
+            <h3 className="text-2xl font-bold text-gray-900 mb-4">Be the first to share a success story</h3>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              As real villagers join and sponsors empower them, their stories of transformation
+              will be featured here. Your sponsorship could be the start of a life-changing journey.
+            </p>
+            <Button
+              className="mt-8 bg-kenya-red text-white hover:bg-red-700"
+              onClick={() => document.getElementById('villagers')?.scrollIntoView({ behavior: 'smooth' })}
+            >
+              Start an Impact Story
+            </Button>
           </div>
         </div>
       </section>
@@ -536,7 +525,6 @@ export default function Landing() {
       </section>
 
       {/* Footer */}
-      <ImpactBar />
       <footer className="bg-gray-900 text-white py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-4 gap-8">

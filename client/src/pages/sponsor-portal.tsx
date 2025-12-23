@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import Navigation from "@/components/navigation";
 import { isUnauthorizedError } from "@/lib/authUtils";
+import { Sponsorship } from "@shared/schema";
 import { MessageCircle, TrendingUp, Heart, Users, Eye } from "lucide-react";
 
 export default function SponsorPortal() {
@@ -28,7 +29,7 @@ export default function SponsorPortal() {
     }
   }, [isAuthenticated, isLoading, toast]);
 
-  const { data: sponsorships = [], isLoading: isLoadingSponshorships } = useQuery({
+  const { data: sponsorships = [], isLoading: isLoadingSponshorships } = useQuery<Sponsorship[]>({
     queryKey: ["/api/my-sponsorships"],
     enabled: isAuthenticated && user?.role === "sponsor",
   });
@@ -65,7 +66,7 @@ export default function SponsorPortal() {
       in_training: { variant: "outline" as const, text: "In Training" },
       active: { variant: "default" as const, text: "Active" },
     };
-    
+
     return statusMap[status as keyof typeof statusMap] || { variant: "secondary" as const, text: status };
   };
 
@@ -76,7 +77,7 @@ export default function SponsorPortal() {
   return (
     <div className="min-h-screen bg-gray-50">
       <Navigation />
-      
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Sponsor Portal</h1>
@@ -174,7 +175,7 @@ export default function SponsorPortal() {
                   const { villager } = sponsorship;
                   const statusBadge = getStatusBadge(villager.status);
                   const progress = calculateProgress(villager.currentAmount, villager.targetAmount);
-                  
+
                   return (
                     <Card key={sponsorship.id} className="hover:shadow-lg transition-shadow" data-testid={`card-villager-${villager.id}`}>
                       <CardContent className="p-6">
@@ -219,7 +220,7 @@ export default function SponsorPortal() {
                             <span className="font-medium">Type: </span>
                             <span className="capitalize" data-testid={`text-sponsorship-type-${villager.id}`}>
                               {sponsorship.sponsorshipType}
-                              {sponsorship.componentType && sponsorship.componentType !== 'full' && 
+                              {sponsorship.componentType && sponsorship.componentType !== 'full' &&
                                 ` (${sponsorship.componentType})`}
                             </span>
                           </div>

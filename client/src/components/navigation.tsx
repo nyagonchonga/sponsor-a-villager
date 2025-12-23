@@ -43,10 +43,10 @@ export default function Navigation() {
   };
 
   const navItems = [
-    { label: 'Home', href: '#home' },
-    { label: 'Villagers', href: '#villagers' },
-    { label: 'Impact', href: '#impact' },
-    { label: 'About', href: '#about' },
+    { label: 'Home', href: '/' },
+    { label: 'Villagers', href: '/#villagers' },
+    { label: 'Impact', href: '/impact' },
+    { label: 'About', href: '/#about' },
   ];
 
   return (
@@ -114,7 +114,7 @@ export default function Navigation() {
                   <DropdownMenuTrigger asChild>
                     <Button variant="ghost" className="relative h-10 w-10 rounded-full" data-testid="user-menu-trigger">
                       <Avatar className="h-10 w-10">
-                        <AvatarImage src={user.profileImageUrl} alt={getDisplayName()} />
+                        <AvatarImage src={user.profileImageUrl || undefined} alt={getDisplayName()} />
                         <AvatarFallback>{getInitials()}</AvatarFallback>
                       </Avatar>
                     </Button>
@@ -198,7 +198,7 @@ export default function Navigation() {
                       <div className="space-y-3">
                         <div className="flex items-center space-x-3 px-3 py-2">
                           <Avatar className="h-8 w-8">
-                            <AvatarImage src={user.profileImageUrl} alt={getDisplayName()} />
+                            <AvatarImage src={user.profileImageUrl || undefined} alt={getDisplayName()} />
                             <AvatarFallback className="text-xs">{getInitials()}</AvatarFallback>
                           </Avatar>
                           <div>

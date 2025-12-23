@@ -11,13 +11,17 @@ interface VillagerCardProps {
     id: string;
     name: string;
     age: number;
-    location: string;
+    county: string;
+    constituency: string;
+    ward: string;
     story: string;
     dream?: string;
     profileImageUrl?: string;
     currentAmount: string;
     targetAmount: string;
     status: string;
+    licenseType?: string;
+    programType?: string;
   };
 }
 
@@ -80,10 +84,26 @@ export default function VillagerCard({ villager }: VillagerCardProps) {
             </motion.div>
           </AnimatePresence>
 
-          <div className="absolute top-3 right-3 z-20">
+          <div className="absolute top-3 right-3 z-20 flex flex-col gap-2 items-end">
             <Badge className={`${statusBadge.color} border-0 shadow-lg`} data-testid={`badge-status-${villager.id}`}>
               {statusBadge.text}
             </Badge>
+            {villager.licenseType && villager.licenseType !== 'none' && (
+              <Badge className="bg-gray-900 text-white border-0 shadow-lg flex items-center gap-1">
+                <span className="text-[10px] uppercase opacity-70">Class</span>
+                {villager.licenseType}
+              </Badge>
+            )}
+            {villager.programType === 'bike_deposit' && (
+              <Badge className="bg-trust-blue text-white border-0 shadow-lg">
+                Bike Deposit
+              </Badge>
+            )}
+            {villager.programType === 'nairobi_driver' && (
+              <Badge className="bg-kenya-black text-white border-0 shadow-lg">
+                Driver Track
+              </Badge>
+            )}
           </div>
         </div>
 
@@ -95,7 +115,7 @@ export default function VillagerCard({ villager }: VillagerCardProps) {
           </div>
 
           <p className="text-gray-500 text-sm font-medium mb-4" data-testid={`text-villager-info-${villager.id}`}>
-            {villager.age} years old • {villager.location}
+            {villager.age} years old • {villager.ward}, {villager.constituency}
           </p>
 
           {/* Progress Bar Container */}
@@ -127,7 +147,10 @@ export default function VillagerCard({ villager }: VillagerCardProps) {
             ) : (
               <Button
                 className="flex-1 bg-kenya-red hover:bg-black text-white rounded-lg font-bold shadow-lg shadow-kenya-red/10 transition-all"
-                onClick={() => navigate(`/checkout?villager=${villager.id}&type=full`)}
+                onClick={() => {
+                  const type = villager.programType === 'bike_deposit' ? 'deposit' : 'full';
+                  navigate(`/checkout?villager=${villager.id}&type=${type}`);
+                }}
                 data-testid={`button-sponsor-${villager.id}`}
               >
                 Sponsor {villager.name.split(' ')[0]}
@@ -145,6 +168,6 @@ export default function VillagerCard({ villager }: VillagerCardProps) {
           </div>
         </CardContent>
       </Card>
-    </motion.div>
+    </motion.div >
   );
 }
